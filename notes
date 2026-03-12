@@ -1,0 +1,6 @@
+After cloning the capstone repo run:
+git submodule update --init --recursive
+
+to add other submodules to this github repo run:
+git submodule add <repo-url> <folder-name>
+cd <folder-name> && git remote set-url --push origin no_push
