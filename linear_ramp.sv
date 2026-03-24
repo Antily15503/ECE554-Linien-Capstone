@@ -1,6 +1,6 @@
 module delay_gen (
     input clk,
-    input rst_n
+    input rst_n,
     input en,
     input [13:0] v_from,
     input [13:0] v_to,
