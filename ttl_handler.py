@@ -1,5 +1,5 @@
 """
-ttl_handler.py - TTL interrupt handler for the Guns 'n Lasers sequence system
+ttl_handler.py — TTL interrupt handler for the Guns 'n Lasers sequence system
 
 watches a GPIO pin for a rising edge. on trigger:
   - loads linien's CSR values into internal snapshot CSRs (transparent load)
@@ -13,7 +13,7 @@ snapshot approach:
   on the last trigger and don't update. on trigger, they become "transparent"
   for one cycle, loading the current values from linien's CSRs. then they
   latch and stay opaque until the next trigger. this avoids tapping linien's
-  internal combinational signals 0 we only read from its already-exposed
+  internal combinational signals - we only read from its already-exposed
   CSR registers, which is cleaner and less fragile.
 
 latency: 5 cycles (40 ns) from physical TTL edge to o_fsm_start pulse.
@@ -24,9 +24,10 @@ latency: 5 cycles (40 ns) from physical TTL edge to o_fsm_start pulse.
   cycle 4: FSM enters TRIGGER, values settled, o_fsm_start=1, o_active=1
   cycle 5: FSM enters ACTIVE, o_fsm_start drops, o_active holds
 jitter: zero. always exactly 5 cycles.
-"""
 
-from modulefinder import Module
+signal naming follows team convention:
+  i_ = input, o_ = output, rst_n = active-low async reset
+"""
 
 from migen import *
 
@@ -39,46 +40,45 @@ SWEEP_WIDTH = 14        # linien sweep generator output
 
 class TTLHandler(Module):
     def __init__(self):
+
         # inputs
 
         # GPIO pin (async, from red pitaya extension header)
-        self.i_ttl = Signal()
+        self.i_ttl = Signal(name="i_ttl")
 
         # arm/disarm from PS (CSRStorage in real build, plain signal for test)
-        self.i_enable = Signal()
+        self.i_enable = Signal(name="i_enable")
 
-        # linien CSR values - these are registered outputs from linien's
+        # linien CSR values — these are registered outputs from linien's
         # existing CSR bus, NOT raw internal signals. we read them like
         # any other memory-mapped register.
-        self.i_linien_pid_out = Signal((DAC_WIDTH, True))
-        self.i_linien_integrator = Signal((INTEGRATOR_WIDTH, True))
-        self.i_linien_sweep_pos = Signal((SWEEP_WIDTH, True))
-        self.i_linien_dac_out = Signal((DAC_WIDTH, True))  # final DAC value (starting voltage)
+        self.i_linien_pid_out = Signal((DAC_WIDTH, True), name="i_linien_pid_out")
+        self.i_linien_integrator = Signal((INTEGRATOR_WIDTH, True), name="i_linien_integrator")
+        self.i_linien_sweep_pos = Signal((SWEEP_WIDTH, True), name="i_linien_sweep_pos")
+        self.i_linien_dac_out = Signal((DAC_WIDTH, True), name="i_linien_dac_out")
 
         # FSM tells us the sequence is done
-        self.i_seq_done = Signal()
-
+        self.i_seq_done = Signal(name="i_seq_done")
 
         # outputs
 
         # one-cycle pulse: tells FSM to begin block 0
-        self.o_fsm_start = Signal()
+        self.o_fsm_start = Signal(name="o_fsm_start")
 
         # level: high while sequence owns the DAC
-        self.o_active = Signal()
+        self.o_active = Signal(name="o_active")
 
         # status readback for PS / exec_monitor
         # bit 0: active (sequence running)
         # bit 1: armed (enabled and waiting for trigger)
-        self.o_status = Signal(2)
+        self.o_status = Signal(2, name="o_status")
 
         # snapshot CSRs — opaque when idle, loaded on trigger.
         # relock reads these after the sequence completes.
-        self.o_saved_pid_out = Signal((DAC_WIDTH, True))
-        self.o_saved_integrator = Signal((INTEGRATOR_WIDTH, True))
-        self.o_saved_sweep_pos = Signal((SWEEP_WIDTH, True))
-        self.o_saved_dac_out = Signal((DAC_WIDTH, True))  # starting voltage for relock
-
+        self.o_saved_pid_out = Signal((DAC_WIDTH, True), name="o_saved_pid_out")
+        self.o_saved_integrator = Signal((INTEGRATOR_WIDTH, True), name="o_saved_integrator")
+        self.o_saved_sweep_pos = Signal((SWEEP_WIDTH, True), name="o_saved_sweep_pos")
+        self.o_saved_dac_out = Signal((DAC_WIDTH, True), name="o_saved_dac_out")  # starting voltage for relock
 
         # two-flop synchronizer
         # GPIO is asynchronous to the 125 MHz fabric clock.
@@ -87,14 +87,13 @@ class TTLHandler(Module):
 
         ttl_sync0 = Signal()
         ttl_sync1 = Signal()
-        ttl_sync_last = Signal()
+        ttl_prev = Signal()
 
         self.sync += [
             ttl_sync0.eq(self.i_ttl),
             ttl_sync1.eq(ttl_sync0),
-            ttl_sync_last.eq(ttl_sync1),
+            ttl_prev.eq(ttl_sync1),
         ]
-
 
         # edge detect and arm logic
 
@@ -103,24 +102,23 @@ class TTLHandler(Module):
 
         self.comb += [
             # rising edge: was low last cycle, high now
-            rising_edge.eq(ttl_sync1 & ~ttl_sync_last),
+            rising_edge.eq(ttl_sync1 & ~ttl_prev),
 
             # armed: PS enabled us and no sequence currently running.
-            # prevents double-trigger — a second edge during an active
+            # prevents double-trigger - a second edge during an active
             # sequence is silently ignored.
             armed.eq(self.i_enable & ~self.o_active),
         ]
 
-
         # state machine
         # four states:
         #
-        # IDLE     - waiting for trigger (if armed). snapshot CSRs opaque.
-        # SNAPSHOT - transparent load: copy linien CSRs into snapshot regs.
+        #   IDLE     - waiting for trigger (if armed). snapshot CSRs opaque.
+        #   SNAPSHOT - transparent load: copy linien CSRs into snapshot regs.
         #              one cycle. o_active not yet asserted (linien still owns DAC).
-        # TRIGGER  - values settled. assert o_fsm_start + o_active.
+        #   TRIGGER  - values settled. assert o_fsm_start + o_active.
         #              one cycle. FSM sees start and begins block 0.
-        # ACTIVE   - sequence running. o_active holds, o_fsm_start drops.
+        #   ACTIVE   - sequence running. o_active holds, o_fsm_start drops.
         #              wait for i_seq_done.
         #
         # the SNAPSHOT -> TRIGGER split is the one-cycle settle delay:
@@ -141,7 +139,7 @@ class TTLHandler(Module):
 
         fsm.act("SNAPSHOT",
             # transparent load: capture linien CSR values into snapshot regs.
-            # o_active is still 0 here - linien is still driving the DAC
+            # o_active is still 0 here — linien is still driving the DAC
             # on this cycle, so its CSR values are still "live" and valid.
             self.o_active.eq(0),
             self.o_fsm_start.eq(0),
@@ -176,4 +174,5 @@ class TTLHandler(Module):
         )
 
         # status output
+
         self.comb += self.o_status.eq(Cat(self.o_active, armed))
