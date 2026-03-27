@@ -12,7 +12,7 @@ def tb_ttl_handler():
 
     def run(dut):
 
-        # ---- helpers ----
+        #helpers
         def set_linien(pid, integ, sweep, dac):
             yield dut.i_linien_pid_out.eq(pid)
             yield dut.i_linien_integrator.eq(integ)
@@ -167,7 +167,7 @@ def tb_ttl_handler():
         yield from wait(3)
         assert (yield dut.o_active) == 0
 
-        # now check: does it trigger again? TTL is already low so shouldn't.
+        #check: does it trigger again? TTL is already low so shouldn't.
         yield from wait(REACT_CYCLES)
         assert (yield dut.o_active) == 0, "should not re-trigger after TTL dropped"
         print("  passed")
