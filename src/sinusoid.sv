@@ -19,7 +19,7 @@ module sinusoid (
     input wire clk,
 
     output wire o_done,
-    output logic [13:0] o_drive
+    output logic signed [13:0] o_drive
 );
 
   wire [31:0] v_mid;
@@ -79,7 +79,7 @@ module sinusoid (
   logic [31:0] phase_accum;
   logic signed [13:0] sin_LUT[1023:0];
   initial begin
-    $readmemh("../test/sinusoid_tb/sin_lut.memh", sin_LUT);
+    $readmemh("sin_lut.memh", sin_LUT);
   end
 
 

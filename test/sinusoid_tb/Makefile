@@ -6,8 +6,7 @@ SIM ?= icarus
 WAVES?=1
 # FST ?= -fst # Use more efficient FST format # Doesn't seen to be working
 TOPLEVEL_LANG ?= verilog
-SRC_DIR = $(PWD)/../../src/
-
+SRC_DIR = $(PWD)/../../src
 
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(wildcard $(SRC_DIR)/*.sv)

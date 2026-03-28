@@ -11,6 +11,7 @@ module sinusoid_tb ();
   logic o_done;
   logic [13:0] o_drive;
 
+  //VERIFIED THAT IT READS IN THE MEMH FILE!
   initial begin
     $dumpfile("sinusoid_tb.vcd");
     $dumpvars(0, sinusoid_tb);
