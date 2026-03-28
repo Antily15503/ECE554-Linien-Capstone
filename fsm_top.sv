@@ -14,7 +14,7 @@
         input [7:0] threshold_in,
 
         output done
-    )
+    );
         // flop to get en_pulse from en. SYNCRONOUS RESET
         wire en_ff, en_pulse;
         always_ff @ (posedge clk) begin
@@ -116,3 +116,8 @@ module fsm_top(
     end
 endmodule
 `default_nettype wire
+-: <stdin>:32:17-20: syntax error at token "else"
+<stdin>:67:18: syntax error at token "["
+<stdin>:108:9-15: syntax error at token "endcase"
+<stdin>:115:9-11: syntax error at token "end"
+

@@ -1,4 +1,4 @@
-module delay_gen (
+module direct_jump (
     input clk,
     input rst_n,
     input en,
