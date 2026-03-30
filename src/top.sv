@@ -10,20 +10,20 @@ module sequence_top #(
     localparam int BLOCK_IDX_WIDTH = $clog2(MAX_BLOCKS),
     localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES)
 ) (
-    input logic clk,
-    input logic rst_n,
+    input wire clk,
+    input wire rst_n,
 
     //Signals from Regfile_Adapter (PS write to reg_file)
-    input logic [REGFILE_ADDR_WIDTH-1:0] i_reg_wr_addr,
-    input logic [DATA_WIDTH-1:0] i_reg_wr_data,
-    input logic i_reg_wr_en,
+    input wire [REGFILE_ADDR_WIDTH-1:0] i_reg_wr_addr,
+    input wire [DATA_WIDTH-1:0] i_reg_wr_data,
+    input wire i_reg_wr_en,
 
     //Signal from Regfile_Adapter (config)
-    input logic [BLOCK_IDX_WIDTH-1:0] i_num_blocks,   //last block index
+    input wire [BLOCK_IDX_WIDTH-1:0] i_num_blocks,   //last block index
 
     //signals from ttl handler
-    input logic                     i_start,         //in ttl_handler, this is o_fsm_start
-    input logic [13:0]              i_init_v,        //saved DAC voltage
+    input wire                     i_start,         //in ttl_handler, this is o_fsm_start
+    input wire [13:0]              i_init_v,        //saved DAC voltage
 
     //Signals to ttl handler
     output logic                    o_seq_done,      //1 cycle pulse
