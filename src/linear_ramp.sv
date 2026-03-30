@@ -16,7 +16,7 @@ module linear_ramp #(
     input wire [3:0] i_param_addr,
     input wire i_active,
 
-    output wire signed [13:0] v_drive
+    output logic signed [13:0] v_drive
 );
 
   //param 0: v_start
