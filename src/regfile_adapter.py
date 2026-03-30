@@ -21,7 +21,7 @@ from migen import *
 from misoc.interconnect.csr import AutoCSR, CSRStorage, CSRStatus
 
 class RegFileAdapter(Module, AutoCSR):
-    def __init__(self, regfile):
+    def __init__(self):
         # CSR registers (PS-facing)
         self.wr_addr = CSRStorage(8, name="wr_addr")  # which reg to write
         self.wr_data = CSRStorage(32, name="wr_data")  # value to write
