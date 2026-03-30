@@ -6,7 +6,7 @@
 
 module chirp_gen (
     input wire clk,
-    input wire rst,
+    input wire rst_n,
     input wire [4:0] param_add,
     input wire [31:0] param_data,
     input wire  en, // this is the start signal
@@ -17,18 +17,28 @@ module chirp_gen (
 );
 
 
+
 logic [23:0] cur_rate; // This will hold the current rate of change of the frequency.
 logic [31:0] a; // This is the starting frequency.
 logic [31:0] b; // This is the ending frequency.
 logic [31:0] rate; // This is the initial rate of change of the frequency.
 logic [31:0] raterate; // This is the rate of change of the rate of change of the frequency.
 
-logic [31:0] params[5:0];
-
-assign a = params[0];
-assign b = params[1];
-assign rate = params[2];
-assign raterate = params[3];
+always_ff @(posedge clk) begin
+    if (!rst_n) begin
+        a <= '0;
+        b <= '0;
+        rate <= '0;
+        raterate <= '0;
+    end else if (en) begin
+        unique case (param_add)
+            4'd0: a <= param_data;
+            4'd1: b <= param_data;
+            4'd2: rate <= param_data;
+            4'd3: raterate <= param_data;
+        endcase 
+    end
+end
 
 logic load_done;
 
