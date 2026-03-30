@@ -8,7 +8,7 @@ module linear_ramp (
     input wire [4:0] i_param_addr,
     input wire [31:0] i_param_data,
     input wire i_en,
-    input wire i_start,
+    input wire i_active,
     input wire rst_n,
     input wire i_wren,
     input wire clk,
@@ -16,24 +16,64 @@ module linear_ramp (
     output wire o_done,
     output logic signed [13:0] o_drive
 );
-  wire  [31:0] v_start;
-  wire  [31:0] v_step;
+  logic [1:0] curr_state, next_state;
+  localparam IDLE = 2'b00;
+  localparam WORK = 2'b01;
 
-  logic [31:0] params  [1:0];
+  logic [31:0] params[1:0];
   assign v_start = params[0];
   assign v_step  = params[1];
 
-  always@(posedge clk)begin
-    if(~rst_n)begin
-      for (integer i=0;i<2;i=i+1)begin
-        params[i]<=32'b0;
+  always @(posedge clk) begin
+    if (~rst_n) begin
+      for (integer i = 0; i < 2; i = i + 1) begin
+        params[i] <= 32'b0;
       end
     end else begin
+      if (i_en && i_wren) begin
+        if (i_param_addr <= 5'h01 && curr_state == IDLE) begin
+          params[i_param_addr] <= i_param_data;
+        end else begin
+        end
+      end
+    end
+  end
 
+  logic active_ff;
+  always @(posedge clk, negedge rst_n) begin
+    if (~rst_n) active_ff <= 1'b0;
+    else active_ff <= i_active;
+  end
+
+  logic active_ff_posedge;
+  always @(posedge clk, negedge rst_n) begin
+    if (~rst_n) active_ff_posedge <= 1'b0;
+    else begin
+      active_ff_posedge <= (~active_ff && i_active);
+    end
+  end
+
+  logic [13:0] o_drive_ff;
+  always @(posedge clk, negedge rst_n) begin
+    if (~rst_n) o_drive_ff <= 14'b0;
+    else begin
+    end
+  end
+
+  always@(posedge clk,negedge rst_n)begin
+    if(~rst_n)
+      o_drive_ff<=14'b0;
+    else begin
+      if(active_ff_posedge)
+        o_drive_ff<=v_start;
+      else begin
+        o_drive_ff<=o_drive_ff+v_step;
+      end
     end
   end
 
 endmodule
+
 
 
 

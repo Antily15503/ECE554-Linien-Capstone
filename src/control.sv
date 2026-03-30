@@ -47,9 +47,8 @@ module control #(
     // shared param bus to functional blocks
     output logic [DATA_WIDTH-1:0]         o_param_data,
     output logic [3:0]                    o_param_addr,
-    output logic                          o_param_wr_en,
 
-    // per-block one-hot enable and start signals
+    // per-block one-hot enable, and start signals
     output logic [NUM_BLOCK_TYPES-1:0]    o_block_en, // <- enables parameter loading
     output logic [NUM_BLOCK_TYPES-1:0]    o_block_active, // <- enables execution
 
@@ -230,7 +229,6 @@ module control #(
     // defaults
     o_param_data  = '0;
     o_param_addr  = '0;
-    o_param_wr_en = 1'b0;
     o_block_en    = '0;
     o_block_active = '0;
     v_drive       = prev_v_drive;
@@ -252,30 +250,30 @@ module control #(
 
       LOAD_PARAMS: begin
         o_active      = 1'b1;
-        o_block_en    = type_onehot;
         if (!last_param) begin
           o_param_addr  = 4'(param_idx);
+          o_block_en    = type_onehot;
           o_param_data  = i_regfile_data;   // data from previous cycle's read
-          o_param_wr_en = 1'b1;
         end
       end
 
       START_BLOCK: begin
         o_active      = 1'b1;
-        o_block_en    = type_onehot;
+        o_block_en    = '0;
         o_block_active = type_onehot;
         v_drive       = active_block_drive;
       end
 
       WAIT_DONE: begin
         o_active   = 1'b1;
-        o_block_en = type_onehot;
+        o_block_en = '0;
         o_block_active = type_onehot;
         v_drive    = active_block_drive;
       end
 
       CAPTURE_VDRIVE: begin
         o_active   = 1'b1;
+        o_block_active = type_onehot;
         v_drive    = active_block_drive;
       end
 
