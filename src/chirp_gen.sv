@@ -1,12 +1,13 @@
-// assert rst with you want to start the chirp. 
+//0x00 = this is the address for the parameter a
+//0x01 = this is the address for the parameter b
+//0x02 = this is the address for the parameter rate
+//0x03 = this is the address for the parameter raterate
 
 module chirp_gen (
     input logic clk,
     input logic rst,
-    input logic [13:0] a, // FROM GUI
-    input logic [13:0] b, // FROM GUI
-    input logic [23:0] rate, // calcualted on the processor stage. this is the initial rate of change of the frequency.
-    input logic [23:0] raterate, // calcualted on the processor stage. This is the rate of change at which the rate of change changes.
+    input logic [4:0] param_add,
+    input logic [31:0] param_data,
     input logic  start, // this is the start signal
    
 
@@ -15,6 +16,17 @@ module chirp_gen (
 );
 
 logic [23:0] cur_rate; // This will hold the current rate of change of the frequency.
+logic [31:0] a; // This is the starting frequency.
+logic [31:0] b; // This is the ending frequency.
+logic [31:0] rate; // This is the initial rate of change of the frequency.
+logic [31:0] raterate; // This is the rate of change of the rate of change of the frequency.
+
+logic [31:0] params[5:0];
+
+assign a = params[0];
+assign b = params[1];
+assign rate = params[2];
+assign raterate = params[3];
 
 always_ff @(posedge clk or posedge rst) begin
     if (rst) begin
