@@ -43,7 +43,7 @@ module linear_ramp #(
 
   logic active_ff_posedge;
   always @(posedge clk, negedge rst_n) begin
-    if (rst_n) active_ff_posedge <= 1'b0;
+    if (!rst_n) active_ff_posedge <= 1'b0;
     else begin
       active_ff_posedge <= (~active_ff && i_active);
     end
@@ -60,4 +60,7 @@ module linear_ramp #(
       end
     end
   end
+
+assign v_drive = i_active ? o_drive_ff : '0;
+
 endmodule
