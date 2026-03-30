@@ -41,14 +41,6 @@ module linear_ramp (
     v_diff = $signed(v_to) - $signed(v_from);
   end
 
-  reg [13:0] div_out;
-  //register complex for calculating division
-  always_ff @(posedge clk, negedge rst_n) begin
-    if (!rst_n) div_out <= '0;
-    else if (en_pulse) begin
-      div_out <= v_diff / dur;
-    end
-  end
 
   //register complex for calculating accumulating addition for ramps
   wire signed [13:0] v_drive_reg;

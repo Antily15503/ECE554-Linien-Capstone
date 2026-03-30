@@ -82,7 +82,7 @@ module control #(
   always_comb begin
     case (cur_type)
       3'd0: num_params = 3'd2;  //delay module: hold_voltage + duration
-      3'd1: num_params = 3'd3;  //linear_ramp: v_from, v_to, duration
+      3'd1: num_params = 3'd3;  //linear_ramp: v_start, rate (signed), duration
       3'd2: num_params = 3'd2;  //direct_jump: target_v, duration
       3'd3: num_params = 3'd6;  //chirp_gen: start_f, end_f, idk I'll just give it 6 slots for now
       3'd4: num_params = 3'd5;  //sinusoid: freq, amp, dc, duration, phase
