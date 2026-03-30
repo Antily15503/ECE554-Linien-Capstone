@@ -23,7 +23,6 @@ module linear_ramp (
     input en,
     input [13:0] v_from,
     input [13:0] v_to,
-    input [7:0] dur,
 
     output [13:0] v_drive
 );
