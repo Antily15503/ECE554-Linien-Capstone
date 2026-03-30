@@ -19,7 +19,6 @@ module control #(
     // parameters
     parameter MAX_BLOCKS = 16,
     parameter DATA_WIDTH = 32,
-    parameter DAC_WIDTH  = 14,
 
     localparam NUM_BLOCK_TYPES = 6,
     localparam MAX_BLOCK_PARAMS = 7,     // max params any block type needs (chirp=6)
@@ -36,15 +35,15 @@ module control #(
     // top level control inputs
     input logic                         i_start,          // one cycle pulse from ttl_handler
     input logic [BLOCK_IDX_WIDTH-1:0]   i_num_blocks,     // last block index (0 = one block)
-    input logic [      DAC_WIDTH-1:0]   i_init_v_drive,   // ttl snapshot starting voltage
+    input logic [13:0]                  i_init_v_drive,   // ttl snapshot starting voltage
 
     // reg_file read port
     output logic [REGFILE_ADDR_WIDTH-1:0] o_regfile_addr,
     input  logic [        DATA_WIDTH-1:0] i_regfile_data,
 
     // functional block done + drive (active block selected by cur_type)
-    input  logic [NUM_BLOCK_TYPES-1:0]    i_block_done,
-    input  logic [DAC_WIDTH-1:0]          i_block_drive [NUM_BLOCK_TYPES],
+    input  logic [NUM_BLOCK_TYPES-1:0]    i_block_done,    // <- remove. done signal will be tracked with an internal clock instead of by each module
+    input  logic [13:0]                   i_block_drive [NUM_BLOCK_TYPES], 
 
     // shared param bus to functional blocks
     output logic [DATA_WIDTH-1:0]         o_param_data,
@@ -52,11 +51,11 @@ module control #(
     output logic                          o_param_wr_en,
 
     // per-block one-hot enable and start signals
-    output logic [NUM_BLOCK_TYPES-1:0]    o_block_en,
-    output logic [NUM_BLOCK_TYPES-1:0]    o_block_start,
+    output logic [NUM_BLOCK_TYPES-1:0]    o_block_en, // <- enables parameter loading
+    output logic [NUM_BLOCK_TYPES-1:0]    o_block_active, // <- enables execution
 
     // DAC output
-    output logic [DAC_WIDTH-1:0]          v_drive,
+    output logic [13:0]                   v_drive,
 
     // control outputs (to ttl_handler / relock)
     output logic                          o_seq_done,
@@ -79,13 +78,13 @@ module control #(
   // ========================= Internal Registers ==============================
   logic [BLOCK_IDX_WIDTH-1:0]      block_idx;      // "program counter"
   logic [PARAM_IDX_WIDTH-1:0]      param_idx;      // current param being loaded
-  logic [DAC_WIDTH-1:0]            prev_v_drive;    // voltage to hold between blocks
+  logic [13:0]                     prev_v_drive;    // voltage to hold between blocks
   logic [BLOCK_TYPE_IDX_WIDTH-1:0] cur_type;        // current block type (opcode)
 
   // ========================= Comb. Intermediates ==============================
   logic [NUM_BLOCK_TYPES-1:0]         type_onehot;
   logic                               active_block_done;
-  logic [DAC_WIDTH-1:0]               active_block_drive;
+  logic [13:0]                        active_block_drive;
   logic [PARAM_IDX_WIDTH-1:0]         num_params;
   logic                               last_param, last_block;
   logic [REGFILE_ADDR_WIDTH-1:0]      block_base_addr;
@@ -94,23 +93,23 @@ module control #(
   assign block_base_addr   = {1'b0, block_idx, 3'b000};      // block_idx * 8
   assign type_onehot       = NUM_BLOCK_TYPES'(1) << cur_type;
   assign active_block_done = i_block_done[cur_type];
-  assign active_block_drive = i_block_drive[cur_type];
+  assign active_block_ddurationrive = i_block_drive[cur_type];
 
   // param count LUT — how many params each block type needs
-  //   type 0 (delay):       2  (hold_voltage, duration)
-  //   type 1 (linear_ramp): 3  (v_start, step_size, duration)
-  //   type 2 (direct_jump): 2  (target_voltage, duration)
-  //   type 3 (chirp):       6  (start_f, end_f, amplitude, dc_offset, phase_inc, duration)
-  //   type 4 (sinusoid):    6  (v_mid, v_amp, v_min_cut, v_max_cut, phase_inc, duration)
-  //   type 5 (arb_wfm):     4  (clk_div, length, start_addr, duration)
+  //   type 0 (delay):       1  (hold_voltage)
+  //   type 1 (linear_ramp): 2  (v_start, step_size)
+  //   type 2 (direct_jump): 2  (target_voltage)
+  //   type 3 (chirp):       5  (start_f, end_f, amplitude, dc_offset, phase_inc)
+  //   type 4 (sinusoid):    5  (v_mid, v_amp, v_min_cut, v_max_cut, phase_inc)
+  //   type 5 (arb_wfm):     3  (clk_div, length, start_addr) <- doesn't need a duration, but ps should calculate how long the awg will take (if it is used) and pass that into the fsm as duration signal.
   always_comb begin
     case (cur_type)
-      3'd0:    num_params = 3'd2;
-      3'd1:    num_params = 3'd3;
-      3'd2:    num_params = 3'd2;
-      3'd3:    num_params = 3'd6;
-      3'd4:    num_params = 3'd6;  // was 5, fixed: sinusoid needs all 6
-      3'd5:    num_params = 3'd4;
+      3'd0:    num_params = 3'd1;
+      3'd1:    num_params = 3'd2;
+      3'd2:    num_params = 3'd1;
+      3'd3:    num_params = 3'd5;
+      3'd4:    num_params = 3'd5;  
+      3'd5:    num_params = 3'd3;
       default: num_params = 3'd1;
     endcase
   end
@@ -220,7 +219,7 @@ module control #(
     o_param_addr  = '0;
     o_param_wr_en = 1'b0;
     o_block_en    = '0;
-    o_block_start = '0;
+    o_block_active = '0;
     v_drive       = prev_v_drive;
     o_seq_done    = 1'b0;
     o_active      = 1'b0;
@@ -249,7 +248,7 @@ module control #(
       START_BLOCK: begin
         o_active      = 1'b1;
         o_block_en    = type_onehot;
-        o_block_start = type_onehot;
+        o_block_active = type_onehot;
         v_drive       = active_block_drive;
       end
 
