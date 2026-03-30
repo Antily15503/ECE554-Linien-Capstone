@@ -105,23 +105,32 @@ control #(
 );
 
 // Delay Block (type 0)
-//TODO: update with fixed delay.sv interface
 delay #(
     .DATA_WIDTH (DATA_WIDTH)
 ) u_delay (
-    .clk            (clk),
-    .rst_n          (rst_n),
-    .i_param_addr   (param_bus_addr),
-    .i_param_data   (param_bus_data),
-    .i_en           (block_en[0]),
-    .i_start        (block_active[0]),
-    .i_wren         (block_en[0]),
-    .o_drive        (block_drive[0])
+    .clk          (clk),
+    .rst_n        (rst_n),
+    .en           (block_en[0]),
+    .i_param_data (param_bus_data),
+    .i_param_addr (param_bus_addr),
+    .active       (block_active[0]),
+    .v_drive      (block_drive[0])
 );
 
 //TODO: Linear Ramp Block
 
-//TODO: Direct jump block
+// Direct Jump Block (type 2)
+direct_jump #(
+    .DATA_WIDTH (DATA_WIDTH)
+) u_direct_jump (
+    .clk          (clk),
+    .rst_n        (rst_n),
+    .en           (block_en[2]),
+    .i_param_data (param_bus_data),
+    .i_param_addr (param_bus_addr),
+    .active       (block_active[2]),
+    .v_drive      (block_drive[2])
+);
 
 //TODO: Chirp block
 
