@@ -32,15 +32,15 @@ module reg_file #(
 
     localparam int DEPTH = 2**ADDR_WIDTH
 ) (
-    input  logic                    clk,
+    input  wire                    clk,
 
     // Port A: write (PS / AXI side, pre-experiment configuration)
-    input  logic [ADDR_WIDTH-1:0]   i_wr_addr,
-    input  logic [DATA_WIDTH-1:0]   i_wr_data,
-    input  logic                    i_wr_en,
+    input  wire [ADDR_WIDTH-1:0]   i_wr_addr,
+    input  wire [DATA_WIDTH-1:0]   i_wr_data,
+    input  wire                    i_wr_en,
 
     // Port B: read (control side, 1-cycle latency)
-    input  logic [ADDR_WIDTH-1:0]   i_rd_addr,
+    input  wire [ADDR_WIDTH-1:0]   i_rd_addr,
 
     output logic [DATA_WIDTH-1:0]   o_rd_data
 );

@@ -50,6 +50,7 @@ module linear_ramp (
   end
 
   logic [13:0] o_drive_ff;
+  assign o_drive = o_drive_ff;
 
   always @(posedge clk, negedge rst_n) begin
     if (~rst_n) o_drive_ff <= 14'b0;

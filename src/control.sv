@@ -29,20 +29,20 @@ module control #(
     localparam int PARAM_IDX_WIDTH      = $clog2(MAX_BLOCK_PARAMS),
     localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES)
 ) (
-    input logic clk,
-    input logic rst_n,
+    input wire clk,
+    input wire rst_n,
 
     // top level control inputs
-    input logic                         i_start,          // one cycle pulse from ttl_handler
-    input logic [BLOCK_IDX_WIDTH-1:0]   i_num_blocks,     // last block index (0 = one block)
-    input logic [13:0]                  i_init_v_drive,   // ttl snapshot starting voltage
+    input wire                         i_start,          // one cycle pulse from ttl_handler
+    input wire [BLOCK_IDX_WIDTH-1:0]   i_num_blocks,     // last block index (0 = one block)
+    input wire [13:0]                  i_init_v_drive,   // ttl snapshot starting voltage
 
     // reg_file read port
     output logic [REGFILE_ADDR_WIDTH-1:0] o_regfile_addr,
-    input  logic [        DATA_WIDTH-1:0] i_regfile_data,
+    input  wire [        DATA_WIDTH-1:0] i_regfile_data,
 
     // functional block drive (active block selected by cur_type)
-    input  logic [13:0]                   i_block_drive [NUM_BLOCK_TYPES], 
+    input  wire [13:0]                   i_block_drive [NUM_BLOCK_TYPES], 
 
     // shared param bus to functional blocks
     output logic [DATA_WIDTH-1:0]         o_param_data,
