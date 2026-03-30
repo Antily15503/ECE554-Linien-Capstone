@@ -15,9 +15,6 @@ how it works:
 also passes through num_blocks (goes to control.sv i_num_blocks) and
 enable (goes to ttl_handler.i_enable) since those don't need to go
 through reg_file, they're just standalone config values.
-
-goes into csr_map as bank 9. auto-generated register names will be
-regfile_adapter_wr_addr, regfile_adapter_wr_data, etc in csrmap.py.
 """
 
 from migen import *
