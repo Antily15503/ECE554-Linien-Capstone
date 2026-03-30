@@ -20,12 +20,18 @@ At each clock cycle, increment v_drive by inc_amt, until module deasserts
 module linear_ramp (
     input clk,
     input rst_n,
-    input en,
+    input en, start,
     input [13:0] v_from,
     input [13:0] v_to,
 
     output [13:0] v_drive
 );
+
+
+
+// ======================================== Old Logic. Vedaant touch this.
+
+
   //register for determining en_pulse from en signals
   wire en_ff, en_pulse;
   always_ff @(posedge clk, negedge rst_n) begin
