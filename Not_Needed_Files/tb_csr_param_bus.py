@@ -1,5 +1,5 @@
 from migen import *
-from csr_param_bus import (
+from Not_Needed_Files.csr_param_bus import (
     CSRParamBus, MAX_BLOCKS, PARAMS_PER_BLOCK,
     ADDR_BLOCK_TYPE, ADDR_DURATION,
     ADDR_PARAM_A, ADDR_PARAM_B, ADDR_PARAM_C, ADDR_PARAM_D,
