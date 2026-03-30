@@ -3,7 +3,6 @@ module direct_jump (
     input rst_n,
     input en,
     input v_target,
-    input [7:0] dur,
 
     output [13:0] v_drive
 );
