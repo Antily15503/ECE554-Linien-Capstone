@@ -1,14 +1,15 @@
+`default_nettype none
 //0x00 = this is the address for the parameter a
 //0x01 = this is the address for the parameter b
 //0x02 = this is the address for the parameter rate
 //0x03 = this is the address for the parameter raterate
 
 module chirp_gen (
-    input logic clk,
-    input logic rst,
-    input logic [4:0] param_add,
-    input logic [31:0] param_data,
-    input logic  en, // this is the start signal
+    input wire clk,
+    input wire rst,
+    input wire [4:0] param_add,
+    input wire [31:0] param_data,
+    input wire  en, // this is the start signal
    
 
     output logic [14:0] voltage,
@@ -62,8 +63,4 @@ end
 
 endmodule
 
-
-        
-
-
- 	
+`default_nettype wire
