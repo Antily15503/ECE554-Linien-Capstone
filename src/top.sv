@@ -117,7 +117,18 @@ delay #(
     .v_drive      (block_drive[0])
 );
 
-//TODO: Linear Ramp Block
+// Linear Ramp Block (type 1)
+linear_ramp #(
+    .DATA_WIDTH (DATA_WIDTH)
+) u_linear_ramp (
+    .clk          (clk),
+    .rst_n        (rst_n),
+    .en           (block_en[1]),
+    .i_param_data (param_bus_data),
+    .i_param_addr (param_bus_addr),
+    .i_active     (block_active[1]),
+    .v_drive      (block_drive[1])
+);
 
 // Direct Jump Block (type 2)
 direct_jump #(

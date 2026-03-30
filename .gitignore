@@ -6,7 +6,6 @@ __pycache__/csr_param_bus.cpython-314.pyc
 **/__pycache__/
 *.qpf
 */work/
-*.vcd
 sim_build/
 *.vvp
 

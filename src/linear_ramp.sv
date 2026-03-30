@@ -4,46 +4,46 @@
 //0x00: v_start; starting drive voltage
 //0x01: v_step; 
 
-module linear_ramp (
-    input wire [3:0] i_param_addr,
-    input wire [31:0] i_param_data,
-    input wire i_en,
-    input wire i_active,
-    input wire rst_n,
-    input wire i_wren,
-    input wire clk,
+module linear_ramp #(
+  parameter DATA_WIDTH = 32
+) (
+    input logic clk,
+    input logic rst_n,
 
-    output logic signed [13:0] o_drive
+    input logic en,
+    input logic [DATA_WIDTH-1:0] i_param_data,
+    input logic [3:0] i_param_addr,
+    input logic i_active,
+
+    output logic signed [13:0] v_drive
 );
 
-  logic [31:0] params[1:0];
-  assign v_start = params[0];
-  assign v_step  = params[1];
-
-  always @(posedge clk) begin
-    if (~rst_n) begin
-      for (integer i = 0; i < 2; i = i + 1) begin
-        params[i] <= 32'b0;
-      end
-    end else begin
-      if (i_en && i_wren) begin
-        if (i_param_addr <= 5'h01) begin
-          params[i_param_addr] <= i_param_data;
-        end else begin
-        end
-      end
+  //param 0: v_start
+  //param 1: v_step
+  logic [13:0] v_start;
+  logic [13:0] v_step;
+  
+  always_ff @ (posedge clk) begin
+    if (!rst_n) begin
+      v_start <= '0;
+      v_step <= '0;
+    end else if (en) begin
+      unique case (i_param_addr)
+        4'd0: v_start <= i_param_data[13:0];
+        4'd1: v_step <= i_param_data[13:0];
+      endcase
     end
   end
 
   logic active_ff;
   always @(posedge clk, negedge rst_n) begin
-    if (~rst_n) active_ff <= 1'b0;
+    if (!rst_n) active_ff <= 1'b0;
     else active_ff <= i_active;
   end
 
   logic active_ff_posedge;
   always @(posedge clk, negedge rst_n) begin
-    if (~rst_n) active_ff_posedge <= 1'b0;
+    if (!rst_n) active_ff_posedge <= 1'b0;
     else begin
       active_ff_posedge <= (~active_ff && i_active);
     end
@@ -61,4 +61,7 @@ module linear_ramp (
       end
     end
   end
+
+assign v_drive = i_active ? o_drive_ff : '0;
+
 endmodule
