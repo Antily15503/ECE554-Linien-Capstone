@@ -8,12 +8,13 @@ module chirp_gen (
     input logic rst,
     input logic [4:0] param_add,
     input logic [31:0] param_data,
-    input logic  start, // this is the start signal
+    input logic  en, // this is the start signal
    
 
     output logic [14:0] voltage,
     output logic done
 );
+
 
 logic [23:0] cur_rate; // This will hold the current rate of change of the frequency.
 logic [31:0] a; // This is the starting frequency.
@@ -28,13 +29,26 @@ assign b = params[1];
 assign rate = params[2];
 assign raterate = params[3];
 
+logic load_done;
+integer i = 0;
+  always_ff @(posedge clk, negedge rst) begin
+    
+    if(i <= 4) begin    
+        params[i] <= param_data;
+        i = i + 1;
+    end
+    
+    load_done = 'b1;
+
+  end
+
 always_ff @(posedge clk or posedge rst) begin
     if (rst) begin
         voltage  <= a;        // START AT a
         cur_rate <= rate;
         done     <= 0;
     end else begin
-        if (start) begin
+        if (en && load_done) begin
         cur_rate <= cur_rate + raterate;
         voltage  <= voltage + cur_rate;
 
@@ -52,3 +66,4 @@ endmodule
         
 
 
+ 	
