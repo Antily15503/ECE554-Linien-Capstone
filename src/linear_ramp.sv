@@ -1,3 +1,4 @@
+`default_nettype none
 //Linear Ramp block; simple shi
 ////////////////// Parameters //////////////////
 //NOTE: try to avoid any kind of division if possible. 
@@ -7,15 +8,15 @@
 module linear_ramp #(
   parameter DATA_WIDTH = 32
 ) (
-    input logic clk,
-    input logic rst_n,
+    input wire clk,
+    input wire rst_n,
 
-    input logic en,
-    input logic [DATA_WIDTH-1:0] i_param_data,
-    input logic [3:0] i_param_addr,
-    input logic i_active,
+    input wire en,
+    input wire [DATA_WIDTH-1:0] i_param_data,
+    input wire [3:0] i_param_addr,
+    input wire i_active,
 
-    output logic signed [13:0] v_drive
+    output wire signed [13:0] v_drive
 );
 
   //param 0: v_start
@@ -65,3 +66,4 @@ module linear_ramp #(
 assign v_drive = i_active ? o_drive_ff : '0;
 
 endmodule
+`default_nettype wire;
