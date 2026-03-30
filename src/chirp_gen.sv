@@ -30,13 +30,12 @@ assign rate = params[2];
 assign raterate = params[3];
 
 logic load_done;
-integer i = 0;
+
   always_ff @(posedge clk, negedge rst) begin
     
-    if(i <= 4) begin    
-        params[i] <= param_data;
-        i = i + 1;
-    end
+    params[i_param_add] <= i_param_data;
+    i = i + 1;
+
     
     load_done = 'b1;
 
