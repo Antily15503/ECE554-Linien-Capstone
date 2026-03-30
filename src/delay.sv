@@ -1,13 +1,14 @@
+`default_nettype none
 module delay #(
   parameter DATA_WIDTH = 32
 )(
-    input logic clk,
-    input logic rst_n,
+    input wire clk,
+    input wire rst_n,
 
-    input logic en,        //connects to o_block_en in control
+    input wire en,        //connects to o_block_en in control
     input [DATA_WIDTH-1:0] i_param_data,
     input [3:0]            i_param_addr,
-    input logic            active,    //connects to o_block_active in control
+    input wire             active,    //connects to o_block_active in control
 
     output [13:0] v_drive
 );
@@ -26,3 +27,4 @@ module delay #(
   
   assign v_drive = active ? v_prev : '0;
 endmodule
+`default_nettype wire

@@ -3,10 +3,10 @@ module chirp_gen_tb();
 // Declare signals FIRST
 logic clk;
 logic rst;
-logic [13:0] a;
-logic [13:0] b;
-logic [23:0] rate;
-logic [23:0] raterate;
+logic [4:0] param_add;
+logic [31:0] param_data;
+logic [4:0] i_param_add;
+logic [31:0] i_param_data;
 logic start;
 
 logic voltage;
@@ -16,30 +16,52 @@ logic done;
 chirp_gen idut( 
     .clk(clk),
     .rst(rst),
-    .a(a),
-    .b(b),
-    .start(start),
-    .rate(rate),
-    .raterate(raterate),
+    .param_add(param_add),
+    .param_data(param_data),
+    .en(start),
+
     .voltage(voltage),
     .done(done)
+);
+
+reg_file dut(
+    .clk(clk),
+    .i_wr_addr(i_param_add),
+    .i_wr_data(i_param_data),
+    .i_wr_en(start),
+
+    .i_rd_addr(param_add),
+    .o_rd_data(param_data)
 );
 
 // Stimulus
 initial begin 
     clk = 0;
-    rst = 1;
-    a = 14'h001;
-    b = 14'h100;
-    rate = 24'd000;
-    raterate = 24'h001;
+    i_param_add = 0;
+    i_param_data = 32'h0009;
+    @(posedge clk);
+    i_param_add = 1;
+    i_param_data = 32'h0001;
+    @(posedge clk);
+    i_param_add = 2;
+    i_param_data = 32'h0000;
+    @(posedge clk);
+    i_param_add = 3;
+    i_param_data = 32'h0000;
 
     @(posedge clk);
-    rst = 0;
     start = 1;
+    rst = 1;
+    @(posedge clk);
+    
+    rst = 0;
+    @(posedge clk);
 
-    #1000000;
-    $finish;
+    #100000; // wait for some time to observe the output
+
+$finish;
+
+
 end
 
 // Clock generation
