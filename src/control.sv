@@ -1,7 +1,4 @@
 `default_nettype none
-
-
-
 module control #(
     //parameters we change
     parameter MAX_BLOCKS = 16,
