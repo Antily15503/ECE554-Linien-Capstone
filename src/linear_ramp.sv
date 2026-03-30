@@ -5,7 +5,7 @@
 //0x01: v_step; 
 
 module linear_ramp (
-    input wire [4:0] i_param_addr,
+    input wire [3:0] i_param_addr,
     input wire [31:0] i_param_data,
     input wire i_en,
     input wire i_active,
@@ -13,12 +13,8 @@ module linear_ramp (
     input wire i_wren,
     input wire clk,
 
-    output wire o_done,
     output logic signed [13:0] o_drive
 );
-  logic [1:0] curr_state, next_state;
-  localparam IDLE = 2'b00;
-  localparam WORK = 2'b01;
 
   logic [31:0] params[1:0];
   assign v_start = params[0];
@@ -31,7 +27,7 @@ module linear_ramp (
       end
     end else begin
       if (i_en && i_wren) begin
-        if (i_param_addr <= 5'h01 && curr_state == IDLE) begin
+        if (i_param_addr <= 5'h01) begin
           params[i_param_addr] <= i_param_data;
         end else begin
         end
@@ -54,26 +50,14 @@ module linear_ramp (
   end
 
   logic [13:0] o_drive_ff;
+
   always @(posedge clk, negedge rst_n) begin
     if (~rst_n) o_drive_ff <= 14'b0;
     else begin
-    end
-  end
-
-  always@(posedge clk,negedge rst_n)begin
-    if(~rst_n)
-      o_drive_ff<=14'b0;
-    else begin
-      if(active_ff_posedge)
-        o_drive_ff<=v_start;
-      else begin
-        o_drive_ff<=o_drive_ff+v_step;
+      if (active_ff_posedge) o_drive_ff <= v_start;
+      else if (active_ff) begin
+        o_drive_ff <= o_drive_ff + v_step;
       end
     end
   end
-
 endmodule
-
-
-
-
