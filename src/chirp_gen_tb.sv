@@ -16,38 +16,29 @@ logic done;
 chirp_gen idut( 
     .clk(clk),
     .rst(rst),
-    .param_add(param_add),
-    .param_data(param_data),
+    .param_add(i_param_add),
+    .param_data(i_param_data),
     .en(start),
 
     .voltage(voltage),
     .done(done)
 );
 
-reg_file dut(
-    .clk(clk),
-    .i_wr_addr(i_param_add),
-    .i_wr_data(i_param_data),
-    .i_wr_en(start),
-
-    .i_rd_addr(param_add),
-    .o_rd_data(param_data)
-);
 
 // Stimulus
 initial begin 
     clk = 0;
     i_param_add = 0;
-    i_param_data = 32'h0009;
+    i_param_data = 32'h0000;
     @(posedge clk);
     i_param_add = 1;
-    i_param_data = 32'h0001;
+    i_param_data = 32'h1000;
     @(posedge clk);
     i_param_add = 2;
     i_param_data = 32'h0000;
     @(posedge clk);
     i_param_add = 3;
-    i_param_data = 32'h0000;
+    i_param_data = 32'h0001;
 
     @(posedge clk);
     start = 1;
