@@ -31,9 +31,8 @@ module reg_file #(
     parameter int DATA_WIDTH = 32,
 
     localparam int DEPTH = 2**ADDR_WIDTH
-) (
+)(
     input  logic                    clk,
-
     // Port A: write (PS / AXI side, pre-experiment configuration)
     input  logic [ADDR_WIDTH-1:0]   i_wr_addr,
     input  logic [DATA_WIDTH-1:0]   i_wr_data,
