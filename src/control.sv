@@ -250,9 +250,9 @@ module control #(
 
       LOAD_PARAMS: begin
         o_active      = 1'b1;
-        o_block_en    = type_onehot;
         if (!last_param) begin
           o_param_addr  = 4'(param_idx);
+          o_block_en    = type_onehot;
           o_param_data  = i_regfile_data;   // data from previous cycle's read
         end
       end
