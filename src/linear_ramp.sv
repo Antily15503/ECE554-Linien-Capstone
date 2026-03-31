@@ -6,7 +6,7 @@
 //0x01: v_step; 
 
 module linear_ramp #(
-  parameter DATA_WIDTH = 32
+    parameter DATA_WIDTH = 32
 ) (
     input wire clk,
     input wire rst_n,
@@ -21,15 +21,15 @@ module linear_ramp #(
 
   //param 0: v_start
   //param 1: v_step
-  logic [13:0] v_start;
-  logic [13:0] v_step;
-  
-  always_ff @ (posedge clk) begin
+  logic signed [13:0] v_start;
+  logic signed [13:0] v_step;
+
+  always_ff @(posedge clk) begin
     if (!rst_n) begin
       v_start <= '0;
-      v_step <= '0;
+      v_step  <= '0;
     end else if (en) begin
-      unique case (i_param_addr)
+      case (i_param_addr)
         4'd0: v_start <= i_param_data[13:0];
         4'd1: v_step <= i_param_data[13:0];
       endcase
@@ -42,28 +42,23 @@ module linear_ramp #(
     else active_ff <= i_active;
   end
 
-  logic active_ff_posedge;
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n) active_ff_posedge <= 1'b0;
-    else begin
-      active_ff_posedge <= (~active_ff && i_active);
-    end
-  end
+  logic active_pulse;
+  assign active_pulse = i_active & ~active_ff;
+
 
   logic [13:0] o_drive_ff;
-  assign o_drive = o_drive_ff;
 
   always @(posedge clk, negedge rst_n) begin
     if (~rst_n) o_drive_ff <= 14'b0;
     else begin
-      if (active_ff_posedge) o_drive_ff <= v_start;
+      if (active_pulse) o_drive_ff <= v_start;
       else if (active_ff) begin
         o_drive_ff <= o_drive_ff + v_step;
       end
     end
   end
 
-assign v_drive = i_active ? o_drive_ff : '0;
+  assign v_drive = i_active ? o_drive_ff : '0;
 
 endmodule
-`default_nettype wire;
+`default_nettype wire
