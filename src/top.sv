@@ -143,9 +143,17 @@ direct_jump #(
     .v_drive      (block_drive[2])
 );
 
-//TODO: Chirp block
-
-//TODO: AWG block
+// Chirp Block (type 3) — uncomment when chirp_gen compiles clean
+assign block_drive[3] = 14'b0;
+// chirp_gen u_chirp_gen (
+//     .clk          (clk),
+//     .rst_n        (rst_n),
+//     .en           (block_en[3]),
+//     .param_data   (param_bus_data),
+//     .param_add    (param_bus_addr),
+//     .active       (block_active[3]),
+//     .voltage      (block_drive[3])
+// );
 
 //Sinusoidal Block (type 4)
 sinusoid #(
@@ -160,6 +168,20 @@ sinusoid #(
     .i_en           (block_en[4]),
     .o_drive        (block_drive[4])
 );
+
+// AWG Block (type 5) — uncomment when arb_wave BRAM path is wired
+assign block_drive[5] = 14'b0;
+// arb_wave u_arb_wave (
+//     .clk          (clk),
+//     .rst_n        (rst_n),
+//     .i_en         (block_en[5]),
+//     .i_param_data (param_bus_data),
+//     .i_param_addr (param_bus_addr),
+//     .i_active     (block_active[5]),
+//     .o_bram_addr  (awg_bram_addr),
+//     .i_bram_data  (awg_bram_data),
+//     .o_drive      (block_drive[5])
+// );
     
 endmodule
 
