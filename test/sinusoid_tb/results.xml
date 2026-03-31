@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1774714174" />
-    <testcase name="test1" classname="sinusoid_tb" file="/home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/test/sinusoid_tb/sinusoid_tb.py" lineno="23" time="2.9743168354034424" sim_time_ns="800168.0" ratio_time="269025.81139828824" />
+    <property name="random_seed" value="1774922327" />
+    <testcase name="test1" classname="sinusoid_tb" file="/home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/test/sinusoid_tb/sinusoid_tb.py" lineno="23" time="6.3692169189453125" sim_time_ns="1600312.0" ratio_time="251257.2613502694" />
   </testsuite>
 </testsuites>

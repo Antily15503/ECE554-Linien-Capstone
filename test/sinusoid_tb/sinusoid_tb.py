@@ -52,4 +52,22 @@ async def test1(dut):
     dut.i_en.value=0
     dut.i_start.value=0
     await ClockCycles(dut.clk, 100000)
+
+    await load(dut,0,2000)
+    await ClockCycles(dut.clk, 2)
+    await load(dut,1,2**13)
+    await ClockCycles(dut.clk, 2)
+    await load(dut,2,-(2**11))
+    await ClockCycles(dut.clk, 2)
+    await load(dut,3,2**12)
+    await ClockCycles(dut.clk, 2)
+    await load(dut,4,1000000)
+    await ClockCycles(dut.clk, 2)
+    await load(dut,5,2**11)
+    dut.i_en.value=1
+    dut.i_start.value=1
+    await ClockCycles(dut.clk, 2)
+    dut.i_en.value=0
+    dut.i_start.value=0
+    await ClockCycles(dut.clk, 100000)
     pass
