@@ -9,15 +9,15 @@ logic [4:0] i_param_add;
 logic [31:0] i_param_data;
 logic start;
 
-logic voltage;
+logic [13:0] voltage;
 logic done;
 
 // DUT instantiation AFTER declarations
 chirp_gen idut( 
     .clk(clk),
-    .rst(rst),
-    .param_add(i_param_add),
-    .param_data(i_param_data),
+    .rst_n(rst),
+    .i_param_add(i_param_add),
+    .i_param_data(i_param_data),
     .en(start),
 
     .voltage(voltage),
@@ -28,23 +28,25 @@ chirp_gen idut(
 // Stimulus
 initial begin 
     clk = 0;
-    i_param_add = 0;
-    i_param_data = 32'h0000;
+    start = 1;
     @(posedge clk);
-    i_param_add = 1;
-    i_param_data = 32'h1000;
+    i_param_add = 4'd0;
+    i_param_data = 32'h00000000;
     @(posedge clk);
-    i_param_add = 2;
-    i_param_data = 32'h0000;
+    i_param_add = 4'd1;
+    i_param_data = 32'h00001000;
     @(posedge clk);
-    i_param_add = 3;
-    i_param_data = 32'h0001;
+    i_param_add = 4'd2;
+    i_param_data = 32'h00000000;
+    @(posedge clk);
+    i_param_add = 4'd3;
+    i_param_data = 32'hFFFFFFFF;
 
     @(posedge clk);
-    start = 1;
     rst = 1;
     @(posedge clk);
     
+    start = 1;
     rst = 0;
     @(posedge clk);
 
