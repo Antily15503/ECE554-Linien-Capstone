@@ -52,10 +52,10 @@ logic [13:0] block_drive [NUM_BLOCK_TYPES];
 // input signals:  clk, rst_n
 //                 ps write signals (i_ps_wr_addr, i_ps_wr_data, i_ps_wr_en)
 // output signals: 
-reg_file #(
+bram #(
         .ADDR_WIDTH (REGFILE_ADDR_WIDTH),
         .DATA_WIDTH (DATA_WIDTH)
-    ) u_reg_file (
+    ) fsm_reg_file (
         .clk        (clk),
 
         // PS write port
