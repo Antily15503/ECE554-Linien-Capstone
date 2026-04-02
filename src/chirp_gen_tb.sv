@@ -40,7 +40,7 @@ initial begin
     i_param_data = 32'h00000000;
     @(posedge clk);
     i_param_add = 4'd3;
-    i_param_data = 32'hFFFFFFFF;
+    i_param_data = 32'h00000001;
 
     @(posedge clk);
     rst = 1;
