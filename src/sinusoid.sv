@@ -9,7 +9,9 @@
 //14x1024 LUT for values. 
 //0x05: time; timer, or how long the block should execute for. 
 
-module sinusoid (
+module sinusoid #(
+    parameter DATA_WIDTH
+  )(
     input wire [4:0] i_param_addr,
     input wire [31:0] i_param_data,
     input wire i_en,
