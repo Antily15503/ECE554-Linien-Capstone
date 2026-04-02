@@ -168,7 +168,7 @@ sinusoid #(
     .o_drive        (block_drive[4])
 );
 
-// AWG Block (type 5) — uncomment when arb_wave BRAM path is wired
+// AWG Block (type 5)
 assign block_drive[5] = 14'b0;
 arb_wave u_arb_wave (
     .clk          (clk),
