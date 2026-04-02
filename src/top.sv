@@ -145,15 +145,15 @@ direct_jump #(
 
 // Chirp Block (type 3) — uncomment when chirp_gen compiles clean
 assign block_drive[3] = 14'b0;
-// chirp_gen u_chirp_gen (
-//     .clk          (clk),
-//     .rst_n        (rst_n),
-//     .en           (block_en[3]),
-//     .param_data   (param_bus_data),
-//     .param_add    (param_bus_addr),
-//     .active       (block_active[3]),
-//     .voltage      (block_drive[3])
-// );
+chirp_gen u_chirp_gen (
+    .clk          (clk),
+    .rst_n        (rst_n),
+    .en           (block_en[3]),
+    .param_data   (param_bus_data),
+    .param_add    (param_bus_addr),
+    .active       (block_active[3]),
+    .voltage      (block_drive[3])
+);
 
 //Sinusoidal Block (type 4)
 sinusoid #(
