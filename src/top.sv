@@ -170,17 +170,17 @@ sinusoid #(
 
 // AWG Block (type 5) — uncomment when arb_wave BRAM path is wired
 assign block_drive[5] = 14'b0;
-// arb_wave u_arb_wave (
-//     .clk          (clk),
-//     .rst_n        (rst_n),
-//     .i_en         (block_en[5]),
-//     .i_param_data (param_bus_data),
-//     .i_param_addr (param_bus_addr),
-//     .i_active     (block_active[5]),
-//     .o_bram_addr  (awg_bram_addr),
-//     .i_bram_data  (awg_bram_data),
-//     .o_drive      (block_drive[5])
-// );
+arb_wave u_arb_wave (
+    .clk          (clk),
+    .rst_n        (rst_n),
+    .i_en         (block_en[5]),
+    .i_param_data (param_bus_data),
+    .i_param_addr (param_bus_addr),
+    .i_active     (block_active[5]),
+    .o_bram_addr  (awg_bram_addr),
+    .i_bram_data  (awg_bram_data),
+    .o_drive      (block_drive[5])
+);
     
 endmodule
 
