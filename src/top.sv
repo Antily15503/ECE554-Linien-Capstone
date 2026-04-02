@@ -143,14 +143,13 @@ direct_jump #(
     .v_drive      (block_drive[2])
 );
 
-// Chirp Block (type 3) — uncomment when chirp_gen compiles clean
-assign block_drive[3] = 14'b0;
+// Chirp Block (type 3)
 chirp_gen u_chirp_gen (
     .clk          (clk),
     .rst_n        (rst_n),
     .en           (block_en[3]),
-    .param_data   (param_bus_data),
-    .param_add    (param_bus_addr),
+    .i_param_data (param_bus_data),
+    .i_param_addr (param_bus_addr),
     .active       (block_active[3]),
     .voltage      (block_drive[3])
 );
