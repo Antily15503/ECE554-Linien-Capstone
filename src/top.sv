@@ -3,8 +3,10 @@
 module sequence_top #(
     parameter int MAX_BLOCKS = 16,
     parameter int DATA_WIDTH = 32,
+    parameter int V_DATA_WIDTH = 14,
     parameter int NUM_BLOCK_TYPES = 6,
-    parameter int REGFILE_ADDR_WIDTH = 8,
+    parameter int FSM_REGFILE_ADDR_WIDTH = 8,
+    parameter int AWG_REGFILE_ADDR_WIDTH = 10,
 
     //auto-calculated parameters
     localparam int BLOCK_IDX_WIDTH = $clog2(MAX_BLOCKS),
@@ -13,10 +15,15 @@ module sequence_top #(
     input wire clk,
     input wire rst_n,
 
-    //Signals from Regfile_Adapter (PS write to reg_file)
-    input wire [REGFILE_ADDR_WIDTH-1:0] i_reg_wr_addr,
-    input wire [DATA_WIDTH-1:0] i_reg_wr_data,
-    input wire i_reg_wr_en,
+    //Signals from Regfile_Adapter for FSM (PS write to reg_file)
+    input wire [FSM_REGFILE_ADDR_WIDTH-1:0] i_fsm_reg_w_addr,
+    input wire [DATA_WIDTH-1:0] i_fsm_reg_w_data,
+    input wire i_fsm_reg_w_en,
+
+    //Signals from Regfile_Adapter for AWG (PS write to reg_file)
+    input wire [AWG_REGFILE_ADDR_WIDTH-1:0] i_awg_reg_w_addr,
+    input wire [V_DATA_WIDTH-1:0] i_awg_reg_w_data,
+    input wire i_awg_reg_w_en,
 
     //Signal from Regfile_Adapter (config)
     input wire [BLOCK_IDX_WIDTH-1:0] i_num_blocks,   //last block index
@@ -36,8 +43,12 @@ module sequence_top #(
 //Internal Wires
 
 //reg file read port (control to reg_file)
-logic [REGFILE_ADDR_WIDTH-1:0] reg_rd_addr;
-logic [DATA_WIDTH-1:0] reg_rd_data;
+logic [FSM_REGFILE_ADDR_WIDTH-1:0] reg_r_addr;
+logic [DATA_WIDTH-1:0] reg_r_data;
+
+//awg reg file read port (awg to reg_files)
+logic [AWG_REGFILE_ADDR_WIDTH-1:0] awg_r_addr;
+logic [V_DATA_WIDTH-1:0] awg_r_data;
 
 //shared param bus (control to all blocks)
 logic [DATA_WIDTH-1:0] param_bus_data;
@@ -46,28 +57,43 @@ logic [NUM_BLOCK_TYPES-1:0] block_en;
 logic [NUM_BLOCK_TYPES-1:0] block_active;
 
 //feedback from blocks to control
-logic [13:0] block_drive [NUM_BLOCK_TYPES];
+logic [V_DATA_WIDTH-1:0] block_drive [NUM_BLOCK_TYPES];
 
 
 // input signals:  clk, rst_n
 //                 ps write signals (i_ps_wr_addr, i_ps_wr_data, i_ps_wr_en)
 // output signals: 
 bram #(
-        .ADDR_WIDTH (REGFILE_ADDR_WIDTH),
+        .ADDR_WIDTH (FSM_REGFILE_ADDR_WIDTH),
         .DATA_WIDTH (DATA_WIDTH)
     ) fsm_reg_file (
         .clk        (clk),
 
         // PS write port
-        .i_wr_addr  (i_reg_wr_addr),
-        .i_wr_data  (i_reg_wr_data),
-        .i_wr_en    (i_reg_wr_en),
+        .i_wr_addr  (i_fsm_reg_w_addr),
+        .i_wr_data  (i_fsm_reg_w_data),
+        .i_wr_en    (i_fsm_reg_w_en),
 
         // Control read port
-        .i_rd_addr  (reg_rd_addr),
-        .o_rd_data  (reg_rd_data)
+        .i_rd_addr  (reg_r_addr),
+        .o_rd_data  (reg_r_data)
     );
 
+bram #(
+      .ADDR_WIDTH(AWG_REGFILE_ADDR_WIDTH),
+      .DATA_WIDTH(V_DATA_WIDTH)
+  ) BRAM (
+      .clk(clk),
+
+      // PS write port
+      .i_wr_addr(i_awg_reg_w_addr),
+      .i_wr_data(i_awg_reg_w_data),
+      .i_wr_en(i_awg_reg_w_en),
+
+      // Control read port
+      .i_rd_addr(awg_r_addr),
+      .o_rd_data(awg_r_data)
+  );
 
 control #(
     .MAX_BLOCKS (MAX_BLOCKS),
@@ -82,8 +108,8 @@ control #(
     .i_init_v_drive (i_init_v),
 
     // Register file read port
-    .o_regfile_addr (reg_rd_addr),
-    .i_regfile_data (reg_rd_data),
+    .o_regfile_addr (reg_r_addr),
+    .i_regfile_data (reg_r_data),
 
     // Function block drive (no more i_block_done!)
     .i_block_drive  (block_drive),
@@ -162,7 +188,6 @@ sinusoid #(
     .rst_n          (rst_n),
     .i_param_addr   (param_bus_addr),
     .i_param_data   (param_bus_data),
-    .i_wren         (block_en[4]),
     .i_start        (block_active[4]),
     .i_en           (block_en[4]),
     .o_drive        (block_drive[4])
@@ -177,8 +202,8 @@ arb_wave u_arb_wave (
     .i_param_data (param_bus_data),
     .i_param_addr (param_bus_addr),
     .i_active     (block_active[5]),
-    .o_bram_addr  (awg_bram_addr),
-    .i_bram_data  (awg_bram_data),
+    .o_bram_addr  (awg_r_addr),
+    .i_bram_data  (awg_r_data),
     .o_drive      (block_drive[5])
 );
     

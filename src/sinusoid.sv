@@ -15,7 +15,6 @@ module sinusoid (
     input wire i_en,
     input wire i_start,
     input wire rst_n,
-    input wire i_wren,
     input wire clk,
 
     output wire o_done,
@@ -48,7 +47,7 @@ module sinusoid (
       end
     end else begin
       //if this block is enabled and i_wren is high, load in the value
-      if (i_en && i_wren) begin
+      if (i_en) begin
 
         //if the param address is within the range of parameters, load it in
         //AND if the current state is IDLE; dont allow writes while working
