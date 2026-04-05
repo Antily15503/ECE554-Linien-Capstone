@@ -3,9 +3,8 @@ module sinusoid_tb ();
   logic [4:0] i_param_addr;
   logic [31:0] i_param_data;
   logic i_en;
-  logic i_start;
+  logic i_active;
   logic rst_n;
-  logic i_wren;
   logic clk;
 
   logic o_done;
@@ -20,11 +19,9 @@ module sinusoid_tb ();
       .i_param_addr(i_param_addr),
       .i_param_data(i_param_data),
       .i_en(i_en),
-      .i_start(i_start),
+      .i_active(i_active),
       .rst_n(rst_n),
-      .i_wren(i_wren),
       .clk(clk),
-      .o_done(o_done),
       .o_drive(o_drive)
   );
 
