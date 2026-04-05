@@ -25,7 +25,7 @@
 // all relevant addresses before i_start, so uninitialized values are never read.
 ////////////////////////////////////////////////////////////////////////////////
 `default_nettype none
-module reg_file #(
+module bram #(
     parameter int ADDR_WIDTH = 8,
     parameter int DATA_WIDTH = 32,
 

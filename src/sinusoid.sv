@@ -11,7 +11,9 @@
 //TODO CHANGES: remove the timer, and instead rely on an external "i_drive"
 //signal
 
-module sinusoid (
+module sinusoid #(
+    parameter DATA_WIDTH
+  )(
     input wire [4:0] i_param_addr,
     input wire [31:0] i_param_data,
     input wire i_en,
@@ -45,9 +47,16 @@ module sinusoid (
     end else begin
       //if this block is enabled and i_wren is high, load in the value
       if (i_en) begin
+<<<<<<< HEAD
         //only allow values to be read in if in the range of parameters AND 
         //not being currently driven. 
         if (i_param_addr <= 5'h4 && i_active==1'b0) begin
+=======
+
+        //if the param address is within the range of parameters, load it in
+        //AND if the current state is IDLE; dont allow writes while working
+        if (i_param_addr <= 5'h5 && curr_state == IDLE) begin
+>>>>>>> 48bf14f18963c364fdcddede6c6c9f7468e6f925
           params[i_param_addr] <= i_param_data;
         end  //otherwise, ignore
         else begin

@@ -100,7 +100,7 @@ module control #(
   //   type 0 (delay):       2  (hold_voltage, duration)
   //   type 1 (linear_ramp): 3  (v_start, step_size, duration)
   //   type 2 (direct_jump): 2  (target_voltage, duration)
-  //   type 3 (chirp):       6  (start_f, end_f, amplitude, dc_offset, phase_inc, duration)
+  //   type 3 (chirp):       6  (a, b, rate, raterate, duration)
   //   type 4 (sinusoid):    6  (v_mid, v_amp, v_min_cut, v_max_cut, phase_inc, duration)
   //   type 5 (arb_wfm):     4  (clk_div, length, duration) <- ps should calculate how long the awg will take (if it is used) and pass that into the fsm as duration signal.
   always_comb begin
@@ -108,7 +108,7 @@ module control #(
       3'd0:    num_params = 3'd2;
       3'd1:    num_params = 3'd3;
       3'd2:    num_params = 3'd2;
-      3'd3:    num_params = 3'd6;
+      3'd3:    num_params = 3'd5;
       3'd4:    num_params = 3'd6;  
       3'd5:    num_params = 3'd4;
       default: num_params = 3'd2;

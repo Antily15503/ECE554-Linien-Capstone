@@ -1,15 +1,16 @@
 
+`default_nettype none
 module direct_jump #(
     parameter DATA_WIDTH = 32
 ) (
-    input clk,
-    input rst_n,
+    input wire clk,
+    input wire rst_n,
 
-    input en,
-    input active,
+    input wire en,
+    input wire active,
 
-    input [DATA_WIDTH-1:0] i_param_data,
-    input [           3:0] i_param_addr,
+    input wire [DATA_WIDTH-1:0] i_param_data,
+    input wire [           3:0] i_param_addr,
 
     output [13:0] v_drive
 );
@@ -26,3 +27,4 @@ module direct_jump #(
   assign v_drive = (active) ? v_target : '0;
 endmodule
 
+`default_nettype wire
