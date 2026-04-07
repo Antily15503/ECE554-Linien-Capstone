@@ -26,14 +26,15 @@ chirp_gen idut(
 // Stimulus
 initial begin
     clk = 0;
-    rst = 1;       // assert reset (active-low)
+    rst = 0;       // assert reset (active-low: 0 = in reset)
     start = 0;
     active = 0;
     i_param_addr = 4'd0;
     i_param_data = 32'h0;
 
     @(posedge clk);
-    rst = 0;       // deassert reset
+    @(posedge clk);
+    rst = 1;       // deassert reset (active-low: 1 = normal operation)
     @(posedge clk);
 
     // Load parameters while en=1
