@@ -236,7 +236,7 @@ initial begin
     // ---------------------------------------------------------------
     // TC-INT3: Delay → Linear Ramp sequence
     // ---------------------------------------------------------------
-    $display("TC-INT3: Delay → Linear Ramp sequence");
+    $display("TC-INT3: Delay and Linear Ramp sequence");
     do_reset(4);
     begin
         automatic logic [DATA_WIDTH-1:0] p0[2] = '{32'd500, 32'd5};      // delay: hold=500, dur=5
