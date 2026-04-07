@@ -1,0 +1,123 @@
+# vsim work.tb_sequence_top 
+# Start time: 11:16:12 on Apr 07,2026
+# Loading sv_std.std
+# Loading work.tb_sequence_top
+# Loading work.sequence_top
+# Loading work.bram
+# Loading work.control
+# Loading work.delay
+# Loading work.linear_ramp
+# Loading work.direct_jump
+# Loading work.chirp_gen
+# Loading work.sinusoid
+# Loading work.arb_wave
+run -all
+# === tb_sequence_top: begin ===
+# TC-INT1: Reset and idle
+#   PASS [TC-INT1 o_active=0]
+#   PASS [TC-INT1 o_seq_done=0]
+#   PASS [TC-INT1 o_dac_drive=0]: 0x0000 (0)
+# TC-INT2: Single delay block (hold=1000, dur=10)
+#   PASS [TC-INT2 o_active high during execution]
+#   PASS [TC-INT2 o_dac_drive=1000 during delay]: 0x03e8 (1000)
+#   PASS [TC-INT2 seq_done received]
+#   PASS [TC-INT2 o_seq_done=1 pulse]
+#   PASS [TC-INT2 o_seq_done drops after 1 cycle]
+#   PASS [TC-INT2 o_active=0 after done]
+# TC-INT3: Delay → Linear Ramp sequence
+#   PASS [TC-INT3 seq_done after delay+ramp]
+# TC-INT4: Direct Jump to 2000
+#   PASS [TC-INT4 o_dac_drive=2000 during direct_jump]: 0x07d0 (2000)
+#   PASS [TC-INT4 seq_done]
+# TC-INT5: Chirp block parabolic ramp
+#   PASS [TC-INT5 seq_done from chirp block]
+# TC-INT6: AWG block with BRAM data
+#   PASS [TC-INT6 seq_done from AWG block]
+# TC-INT7: o_active timing verification
+#   PASS [TC-INT7 o_active=0 before start]
+#   PASS [TC-INT7 o_active=1 in FETCH_TYPE]
+#   PASS [TC-INT7 seq_done]
+#   PASS [TC-INT7 o_active=0 after DONE]
+# TC-INT8: Back-to-back starts
+#   PASS [TC-INT8 second run seq_done]
+# TC-INT9: Async reset mid-sequence
+#   PASS [TC-INT9 o_active before reset]
+#   PASS [TC-INT9 o_active=0 after reset]
+#   PASS [TC-INT9 o_seq_done=0 after reset]
+#   PASS [TC-INT9 o_dac_drive=0 after reset]: 0x0000 (0)
+#   PASS [TC-INT9 seq_done after recovery]
+# === tb_sequence_top: 24 passed, 0 failed ===
+# PASS: integration
+# ** Note: $finish    : ../verification/tb/tb_sequence_top.sv(420)
+#    Time: 3165 ps  Iteration: 1  Instance: /tb_sequence_top
+# 1
+# Break in Module tb_sequence_top at ../verification/tb/tb_sequence_top.sv line 420
+add wave -position insertpoint  \
+sim:/tb_sequence_top/AWG_REGFILE_ADDR_WIDTH \
+sim:/tb_sequence_top/BLOCK_IDX_WIDTH \
+sim:/tb_sequence_top/clk \
+sim:/tb_sequence_top/CLK_HALF \
+sim:/tb_sequence_top/DATA_WIDTH \
+sim:/tb_sequence_top/done_count \
+sim:/tb_sequence_top/fail_count \
+sim:/tb_sequence_top/FSM_REGFILE_ADDR_WIDTH \
+sim:/tb_sequence_top/i_awg_reg_w_addr \
+sim:/tb_sequence_top/i_awg_reg_w_data \
+sim:/tb_sequence_top/i_awg_reg_w_en \
+sim:/tb_sequence_top/i_fsm_reg_w_addr \
+sim:/tb_sequence_top/i_fsm_reg_w_data \
+sim:/tb_sequence_top/i_fsm_reg_w_en \
+sim:/tb_sequence_top/i_init_v \
+sim:/tb_sequence_top/i_num_blocks \
+sim:/tb_sequence_top/i_start \
+sim:/tb_sequence_top/MAX_BLOCKS \
+sim:/tb_sequence_top/NUM_BLOCK_TYPES \
+sim:/tb_sequence_top/o_active \
+sim:/tb_sequence_top/o_dac_drive \
+sim:/tb_sequence_top/o_seq_done \
+sim:/tb_sequence_top/pass_count \
+sim:/tb_sequence_top/rst_n \
+sim:/tb_sequence_top/V_DATA_WIDTH
+restart
+# Closing VCD file "tb_sequence_top.vcd"
+run -all
+# === tb_sequence_top: begin ===
+# TC-INT1: Reset and idle
+#   PASS [TC-INT1 o_active=0]
+#   PASS [TC-INT1 o_seq_done=0]
+#   PASS [TC-INT1 o_dac_drive=0]: 0x0000 (0)
+# TC-INT2: Single delay block (hold=1000, dur=10)
+#   PASS [TC-INT2 o_active high during execution]
+#   PASS [TC-INT2 o_dac_drive=1000 during delay]: 0x03e8 (1000)
+#   PASS [TC-INT2 seq_done received]
+#   PASS [TC-INT2 o_seq_done=1 pulse]
+#   PASS [TC-INT2 o_seq_done drops after 1 cycle]
+#   PASS [TC-INT2 o_active=0 after done]
+# TC-INT3: Delay → Linear Ramp sequence
+#   PASS [TC-INT3 seq_done after delay+ramp]
+# TC-INT4: Direct Jump to 2000
+#   PASS [TC-INT4 o_dac_drive=2000 during direct_jump]: 0x07d0 (2000)
+#   PASS [TC-INT4 seq_done]
+# TC-INT5: Chirp block parabolic ramp
+#   PASS [TC-INT5 seq_done from chirp block]
+# TC-INT6: AWG block with BRAM data
+#   PASS [TC-INT6 seq_done from AWG block]
+# TC-INT7: o_active timing verification
+#   PASS [TC-INT7 o_active=0 before start]
+#   PASS [TC-INT7 o_active=1 in FETCH_TYPE]
+#   PASS [TC-INT7 seq_done]
+#   PASS [TC-INT7 o_active=0 after DONE]
+# TC-INT8: Back-to-back starts
+#   PASS [TC-INT8 second run seq_done]
+# TC-INT9: Async reset mid-sequence
+#   PASS [TC-INT9 o_active before reset]
+#   PASS [TC-INT9 o_active=0 after reset]
+#   PASS [TC-INT9 o_seq_done=0 after reset]
+#   PASS [TC-INT9 o_dac_drive=0 after reset]: 0x0000 (0)
+#   PASS [TC-INT9 seq_done after recovery]
+# === tb_sequence_top: 24 passed, 0 failed ===
+# PASS: integration
+# ** Note: $finish    : ../verification/tb/tb_sequence_top.sv(420)
+#    Time: 3165 ps  Iteration: 1  Instance: /tb_sequence_top
+# 1
+# Break in Module tb_sequence_top at ../verification/tb/tb_sequence_top.sv line 420

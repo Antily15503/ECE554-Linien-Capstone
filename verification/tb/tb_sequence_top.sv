@@ -160,7 +160,7 @@ task write_block(
     input logic [DATA_WIDTH-1:0] params[],
     input int          num_p
 );
-    int base = slot * 8;
+    automatic int base = slot * 8;
     fsm_reg_write(8'(base),   {29'b0, btype});
     for (int i = 0; i < num_p; i++)
         fsm_reg_write(8'(base + 1 + i), params[i]);
@@ -301,11 +301,9 @@ initial begin
     // ---------------------------------------------------------------
     $display("TC-INT6: AWG block with BRAM data");
     do_reset(4);
-    // Load AWG BRAM
-    awg_reg_write(10'd0, 14'd100);
-    awg_reg_write(10'd1, 14'd200);
-    awg_reg_write(10'd2, 14'd300);
-    awg_reg_write(10'd3, 14'd400);
+    // Load AWG BRAM — fill enough entries for full duration + pipeline latency
+    for (int i = 0; i < 20; i++)
+        awg_reg_write(10'(i), 14'(100 + i * 100));
     begin
         // AWG: param[0]=clk_div, param[1]=unused, param[2]=unused, param[3]=duration
         automatic logic [DATA_WIDTH-1:0] p[4] = '{32'd1, 32'd0, 32'd0, 32'd10};
@@ -363,10 +361,10 @@ initial begin
     pulse_start();
     @(posedge clk);
     while (!o_seq_done) @(posedge clk);
-    #1;
-    // Immediately start second run on the same cycle as seq_done
-    i_start <= 1;
-    @(negedge clk); i_start <= 0;
+    // Wait for FSM to return to IDLE (DONE → IDLE takes 1 cycle)
+    @(posedge clk);
+    // Now start second run
+    pulse_start();
 
     begin
         automatic logic to;
@@ -424,8 +422,9 @@ end
 
 // ---- Continuous X/Z assertion on DAC during active sequence ----
 always @(posedge clk) begin
-    if (o_active && (^o_dac_drive === 1'bx))
+    if (o_active && (^o_dac_drive === 1'bx)) begin
         $fatal(1, "SIGNAL INTEGRITY: o_dac_drive has X/Z during active sequence at time %0t", $time);
+    end
 end
 
 // ---- seq_done stuck-high watchdog ----

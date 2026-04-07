@@ -59,10 +59,11 @@ module arb_wave (
 
   assign o_bram_addr = bram_addr_r;
 
-  //output pipeline stage; accounting for 1 clock cycle latency
+  //output pipeline stage; accounting for 1 clock cycle BRAM read latency
+  //use active_ff (delayed by 1 cycle) so BRAM output is valid before we sample it
   always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) o_drive <= 14'b0;
-    else if (~i_active) o_drive <= 14'b0;
+    else if (~active_ff) o_drive <= 14'b0;
     else o_drive <= i_bram_data;
   end
 
