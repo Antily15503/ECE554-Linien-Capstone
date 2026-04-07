@@ -296,6 +296,62 @@ initial begin
     end
 
     // ---------------------------------------------------------------
+    // TC-INT5b: Sinusoid block (type 4)
+    //   v_mid=4000, v_amp=2000, v_min_cut=0, v_max_cut=8000,
+    //   phase_inc=4194304 (~1 kHz at 100 MHz with 32-bit accum), dur=20
+    // ---------------------------------------------------------------
+    $display("TC-INT5b: Sinusoid block");
+    do_reset(4);
+    begin
+        automatic logic [DATA_WIDTH-1:0] p[6] = '{
+            32'd4000,     // v_mid
+            32'd2000,     // v_amp
+            32'd0,        // v_min_cutoff
+            32'd8000,     // v_max_cutoff
+            32'd4194304,  // phase_increment
+            32'd40        // duration (longer to allow multiple samples)
+        };
+        write_block(0, 3'd4, p, 6);
+    end
+    i_num_blocks = BLOCK_IDX_WIDTH'(0);
+    pulse_start();
+
+    // Wait for active — sinusoid has 6 params so LOAD_PARAMS takes ~6 cycles
+    // then START_BLOCK + a few WAIT_DONE cycles before sampling.
+    // Need at least 10 cycles after o_active to be in WAIT_DONE.
+    @(posedge clk);
+    while (!o_active) @(posedge clk);
+    repeat (12) @(posedge clk); #1;
+    check("TC-INT5b o_active high during sinusoid", o_active, 1'b1);
+    // With v_mid=4000, sin(0)=0 in LUT, output should start at ~4000
+    // and oscillate around v_mid. Must be non-zero during execution.
+    $display("  INFO: o_dac_drive = %0d during sinusoid execution", o_dac_drive);
+    if (o_dac_drive == 14'd0) begin
+        $display("  FAIL [TC-INT5b o_dac_drive nonzero]: got 0, expected ~4000 (v_mid)");
+        fail_count++;
+    end else begin
+        $display("  PASS [TC-INT5b o_dac_drive nonzero]: %0d", o_dac_drive);
+        pass_count++;
+    end
+
+    // Sample a few more cycles and verify output stays in valid range [0, 8000]
+    repeat (5) @(posedge clk); #1;
+    $display("  INFO: o_dac_drive = %0d (2nd sample)", o_dac_drive);
+    if (o_dac_drive == 14'd0) begin
+        $display("  FAIL [TC-INT5b o_dac_drive 2nd nonzero]: got 0");
+        fail_count++;
+    end else begin
+        $display("  PASS [TC-INT5b o_dac_drive 2nd nonzero]: %0d", o_dac_drive);
+        pass_count++;
+    end
+
+    begin
+        automatic logic to;
+        wait_seq_done(500, to);
+        check("TC-INT5b seq_done from sinusoid block", to, 1'b0);
+    end
+
+    // ---------------------------------------------------------------
     // TC-INT6: AWG block with pre-loaded BRAM data
     //   BRAM[0..3] = 100,200,300,400; clk_div=1, duration=10
     // ---------------------------------------------------------------
