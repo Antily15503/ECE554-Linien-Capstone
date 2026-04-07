@@ -1,3 +1,4 @@
+`default_nettype none
 //0x00: clk_div: value for the clock divider
 //into it
 module arb_wave (
@@ -21,7 +22,7 @@ module arb_wave (
   always_ff @(posedge clk, negedge rst_n) begin
     if (!rst_n) begin
       clk_div <= 32'd1;  // default: step every cycle
-    end else if (i_en && i_param_addr == 3'd0) begin
+    end else if (i_en && i_param_addr == 4'd0) begin
       clk_div <= i_param_data;
     end
   end
@@ -39,7 +40,7 @@ module arb_wave (
   logic [31:0] div_counter;
   logic [ 9:0] bram_addr_r;
 
-  always @(posedge clk, negedge rst_n) begin
+  always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
       div_counter <= 32'b0;
       bram_addr_r <= 10'b0;
@@ -58,8 +59,8 @@ module arb_wave (
 
   assign o_bram_addr = bram_addr_r;
 
-  //output pipeline stage; accoutning for 1 clock cycle latency
-  always @(posedge clk, negedge rst_n) begin
+  //output pipeline stage; accounting for 1 clock cycle latency
+  always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) o_drive <= 14'b0;
     else if (~i_active) o_drive <= 14'b0;
     else o_drive <= i_bram_data;
@@ -67,3 +68,4 @@ module arb_wave (
 
 
 endmodule
+`default_nettype wire

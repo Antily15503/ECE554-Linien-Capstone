@@ -188,7 +188,7 @@ sinusoid #(
     .rst_n          (rst_n),
     .i_param_addr   (param_bus_addr),
     .i_param_data   (param_bus_data),
-    .i_start        (block_active[4]),
+    .i_active       (block_active[4]),
     .i_en           (block_en[4]),
     .o_drive        (block_drive[4])
 );

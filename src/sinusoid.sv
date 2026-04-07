@@ -14,7 +14,7 @@
 module sinusoid #(
     parameter DATA_WIDTH
   )(
-    input wire [4:0] i_param_addr,
+    input wire [3:0] i_param_addr,
     input wire [31:0] i_param_data,
     input wire i_en,
     input wire i_active,
@@ -41,7 +41,7 @@ module sinusoid #(
 
   always @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
-      for (integer i = 0; i < 6; i = i + 1) begin
+      for (integer i = 0; i < 5; i = i + 1) begin
         params[i] <= 32'b0;
       end
     end else begin
@@ -49,13 +49,14 @@ module sinusoid #(
       if (i_en) begin
         //only allow values to be read in if in the range of parameters AND 
         //not being currently driven. 
-        if (i_param_addr <= 5'h4 && i_active==1'b0) begin
+        if (i_param_addr <= 4'h4 && i_active==1'b0) begin
           params[i_param_addr] <= i_param_data;
         end  //otherwise, ignore
         else begin
         end
       end
-    end end
+    end
+  end
 
   // logicisters to keep track of current driving voltage and current phase
 

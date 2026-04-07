@@ -6,7 +6,7 @@ module arb_wave_tb ();
   logic rst_n;
 
   logic i_en;
-  logic [DATA_WIDTH-1:0] i_param_data;
+  logic [31:0] i_param_data;
   logic [3:0] i_param_addr;
   logic i_active;
 
@@ -29,7 +29,7 @@ module arb_wave_tb ();
   logic signed [          13:0] o_drive;
   /////////TREAT THE FSM_REG PREVIOUSLY DESIGNED AS A PLACEHOLDER FOR 
   //IP INSTANTIATED BRAM BLOCK WITH AXI BUS
-  reg_file #(
+  bram #(
       .ADDR_WIDTH(10),
       .DATA_WIDTH(14)
   ) BRAM (
