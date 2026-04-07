@@ -47,23 +47,15 @@ module sinusoid #(
     end else begin
       //if this block is enabled and i_wren is high, load in the value
       if (i_en) begin
-<<<<<<< HEAD
         //only allow values to be read in if in the range of parameters AND 
         //not being currently driven. 
         if (i_param_addr <= 5'h4 && i_active==1'b0) begin
-=======
-
-        //if the param address is within the range of parameters, load it in
-        //AND if the current state is IDLE; dont allow writes while working
-        if (i_param_addr <= 5'h5 && curr_state == IDLE) begin
->>>>>>> 48bf14f18963c364fdcddede6c6c9f7468e6f925
           params[i_param_addr] <= i_param_data;
         end  //otherwise, ignore
         else begin
         end
       end
-    end
-  end
+    end end
 
   // logicisters to keep track of current driving voltage and current phase
 

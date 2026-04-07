@@ -12,7 +12,7 @@ module direct_jump #(
     input wire [DATA_WIDTH-1:0] i_param_data,
     input wire [           3:0] i_param_addr,
 
-    output [13:0] v_drive
+    output wire  [13:0] v_drive
 );
   //note: this module same as delay because the 1 clk cycle gap we have where we drive the pre-target voltage is handled by the FSM, not by this logic.
   logic [13:0] v_target;
