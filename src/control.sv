@@ -20,14 +20,12 @@ module control #(
     parameter MAX_BLOCKS = 16,
     parameter DATA_WIDTH = 32,
 
-    localparam NUM_BLOCK_TYPES = 6,
-    localparam MAX_BLOCK_PARAMS = 7,     // max params any block type needs (chirp=6)
-    localparam REGFILE_ADDR_WIDTH = 8,
+    parameter NUM_BLOCK_TYPES = 6,
+    parameter MAX_BLOCK_PARAMS = 7,     // max params any block type needs (chirp=6)
+    parameter REGFILE_ADDR_WIDTH = 8
 
     // auto-calculated
-    localparam int BLOCK_IDX_WIDTH      = $clog2(MAX_BLOCKS),
-    localparam int PARAM_IDX_WIDTH      = $clog2(MAX_BLOCK_PARAMS),
-    localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES)
+   
 ) (
     input wire clk,
     input wire rst_n,
@@ -59,6 +57,9 @@ module control #(
     output logic                          o_seq_done,
     output logic                          o_active
 );
+	 localparam int BLOCK_IDX_WIDTH      = $clog2(MAX_BLOCKS);
+    localparam int PARAM_IDX_WIDTH      = $clog2(MAX_BLOCK_PARAMS);
+    localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES);
 
   // ========================= FSM encoding ==============================
   typedef enum logic [2:0] {

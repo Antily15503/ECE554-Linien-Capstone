@@ -1,16 +1,15 @@
 `default_nettype none
 
-module sequence_top #(
+module top #(
     parameter int MAX_BLOCKS = 16,
     parameter int DATA_WIDTH = 32,
     parameter int V_DATA_WIDTH = 14,
     parameter int NUM_BLOCK_TYPES = 6,
     parameter int FSM_REGFILE_ADDR_WIDTH = 8,
-    parameter int AWG_REGFILE_ADDR_WIDTH = 10,
+    parameter int AWG_REGFILE_ADDR_WIDTH = 10
 
     //auto-calculated parameters
-    localparam int BLOCK_IDX_WIDTH = $clog2(MAX_BLOCKS),
-    localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES)
+  
 ) (
     input wire clk,
     input wire rst_n,
@@ -41,7 +40,8 @@ module sequence_top #(
 );
 
 //Internal Wires
-
+  localparam int BLOCK_IDX_WIDTH = $clog2(MAX_BLOCKS);
+    localparam int BLOCK_TYPE_IDX_WIDTH = $clog2(NUM_BLOCK_TYPES);
 //reg file read port (control to reg_file)
 logic [FSM_REGFILE_ADDR_WIDTH-1:0] reg_r_addr;
 logic [DATA_WIDTH-1:0] reg_r_data;

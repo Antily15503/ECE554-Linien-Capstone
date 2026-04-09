@@ -140,7 +140,8 @@ task write_block(
     input logic [DATA_WIDTH-1:0] params[],  // all params including duration as last element
     input int          num_p       // total param count (includes duration)
 );
-    int base = slot * 8;
+    static int  base;
+    base = slot * 8;
     regfile_mem[base] = {29'b0, btype};
     for (int i = 0; i < num_p; i++)
         regfile_mem[base + 1 + i] = params[i];

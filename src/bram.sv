@@ -27,9 +27,9 @@
 `default_nettype none
 module bram #(
     parameter int ADDR_WIDTH = 8,
-    parameter int DATA_WIDTH = 32,
+    parameter int DATA_WIDTH = 32
 
-    localparam int DEPTH = 2 ** ADDR_WIDTH
+   
 ) (
     input wire clk,
 
@@ -43,7 +43,7 @@ module bram #(
 
     output logic [DATA_WIDTH-1:0] o_rd_data
 );
-
+ localparam int DEPTH = 2 ** ADDR_WIDTH;
   // Storage
   logic [DATA_WIDTH-1:0] mem[DEPTH];
 
