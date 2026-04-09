@@ -53,7 +53,7 @@ logic                              o_seq_done;
 logic                              o_active;
 logic [V_DATA_WIDTH-1:0]           o_dac_drive;
 
-// ---- DUT Instantiation ----
+// DUT Instantiation
 sequence_top #(
     .MAX_BLOCKS             (MAX_BLOCKS),
     .DATA_WIDTH             (DATA_WIDTH),
@@ -188,9 +188,8 @@ initial begin
     i_fsm_reg_w_en = 0; i_fsm_reg_w_addr = '0; i_fsm_reg_w_data = '0;
     i_awg_reg_w_en = 0; i_awg_reg_w_addr = '0; i_awg_reg_w_data = '0;
 
-    // ---------------------------------------------------------------
+
     // TC-INT1: Idle state after reset
-    // ---------------------------------------------------------------
     $display("TC-INT1: Reset and idle");
     do_reset(8);
     @(posedge clk); #1;
@@ -198,9 +197,8 @@ initial begin
     check("TC-INT1 o_seq_done=0", o_seq_done, 1'b0);
     check14("TC-INT1 o_dac_drive=0", o_dac_drive, 14'h0);
 
-    // ---------------------------------------------------------------
+
     // TC-INT2: Single delay block — hold 1000 for 10 cycles
-    // ---------------------------------------------------------------
     $display("TC-INT2: Single delay block (hold=1000, dur=10)");
     do_reset(4);
 
@@ -233,9 +231,8 @@ initial begin
     check("TC-INT2 o_seq_done drops after 1 cycle", o_seq_done, 1'b0);
     check("TC-INT2 o_active=0 after done", o_active, 1'b0);
 
-    // ---------------------------------------------------------------
+
     // TC-INT3: Delay → Linear Ramp sequence
-    // ---------------------------------------------------------------
     $display("TC-INT3: Delay and Linear Ramp sequence");
     do_reset(4);
     begin
@@ -253,9 +250,8 @@ initial begin
         check("TC-INT3 seq_done after delay+ramp", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT4: Direct Jump block
-    // ---------------------------------------------------------------
     $display("TC-INT4: Direct Jump to 2000");
     do_reset(4);
     begin
@@ -276,10 +272,9 @@ initial begin
         check("TC-INT4 seq_done", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT5: Chirp block (parabolic ramp)
     //   a=0, b=0, rate=20, raterate=2, duration=15
-    // ---------------------------------------------------------------
     $display("TC-INT5: Chirp block parabolic ramp");
     do_reset(4);
     begin
@@ -295,11 +290,10 @@ initial begin
         check("TC-INT5 seq_done from chirp block", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT5b: Sinusoid block (type 4)
     //   v_mid=4000, v_amp=2000, v_min_cut=0, v_max_cut=8000,
     //   phase_inc=4194304 (~1 kHz at 100 MHz with 32-bit accum), dur=20
-    // ---------------------------------------------------------------
     $display("TC-INT5b: Sinusoid block");
     do_reset(4);
     begin
@@ -351,10 +345,9 @@ initial begin
         check("TC-INT5b seq_done from sinusoid block", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT6: AWG block with pre-loaded BRAM data
     //   BRAM[0..3] = 100,200,300,400; clk_div=1, duration=10
-    // ---------------------------------------------------------------
     $display("TC-INT6: AWG block with BRAM data");
     do_reset(4);
     // Load AWG BRAM — fill enough entries for full duration + pipeline latency
@@ -374,9 +367,8 @@ initial begin
         check("TC-INT6 seq_done from AWG block", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT7: o_active timing — high from FETCH_TYPE through CAPTURE_VDRIVE
-    // ---------------------------------------------------------------
     $display("TC-INT7: o_active timing verification");
     do_reset(4);
     begin
@@ -402,9 +394,8 @@ initial begin
     @(posedge clk); #1;  // DONE → IDLE
     check("TC-INT7 o_active=0 after DONE", o_active, 1'b0);
 
-    // ---------------------------------------------------------------
+
     // TC-INT8: Back-to-back sequences (start immediately after seq_done)
-    // ---------------------------------------------------------------
     $display("TC-INT8: Back-to-back starts");
     do_reset(4);
     begin
@@ -428,9 +419,8 @@ initial begin
         check("TC-INT8 second run seq_done", to, 1'b0);
     end
 
-    // ---------------------------------------------------------------
+
     // TC-INT9: Async reset mid-sequence
-    // ---------------------------------------------------------------
     $display("TC-INT9: Async reset mid-sequence");
     do_reset(4);
     begin
@@ -466,7 +456,7 @@ initial begin
         check("TC-INT9 seq_done after recovery", to, 1'b0);
     end
 
-    // ---- Final report ----
+    // Final report
     $display("=== tb_sequence_top: %0d passed, %0d failed ===", pass_count, fail_count);
     if (fail_count == 0)
         $display("PASS: integration");
@@ -476,14 +466,14 @@ initial begin
     $finish;
 end
 
-// ---- Continuous X/Z assertion on DAC during active sequence ----
+// Continuous X/Z assertion on DAC during active sequence
 always @(posedge clk) begin
     if (o_active && (^o_dac_drive === 1'bx)) begin
         $fatal(1, "SIGNAL INTEGRITY: o_dac_drive has X/Z during active sequence at time %0t", $time);
     end
 end
 
-// ---- seq_done stuck-high watchdog ----
+// seq_done stuck-high watchdog
 logic [3:0] done_count = 0;
 always @(posedge clk) begin
     if (o_seq_done) done_count <= done_count + 1;
