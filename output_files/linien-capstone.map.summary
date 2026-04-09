@@ -1,10 +1,10 @@
-Analysis & Synthesis Status : Successful - Thu Apr  9 14:55:41 2026
+Analysis & Synthesis Status : Successful - Thu Apr  9 15:55:41 2026
 Quartus Prime Version : 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
 Revision Name : linien-capstone
 Top-level Entity Name : top
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 609
+Total registers : 628
 Total pins : 103
 Total virtual pins : 0
 Total block memory bits : 22,528

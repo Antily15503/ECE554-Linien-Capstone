@@ -110,9 +110,25 @@ module sinusoid #(
   wire signed  [31:0] v_min_cut_s = $signed(v_min_cut);
   wire signed  [31:0] v_max_cut_s = $signed(v_max_cut);
 
+  //split this into two parts, pipelining the addition and multiplication
+  //process?
+  reg[31:0] mult;
+  always@(posedge clk,negedge rst_n)begin
+    if(~rst_n)begin
+      mult<=32'b0;
+    end
+    else begin
+      if(i_active)begin
+      mult<=lut_raw*v_amp_s;
+    end
+    else begin
+      mult<=32'b0;
+    end
+    end
+  end
   always_comb begin
     lut_raw = sin_LUT[phase_accum[31:22]];
-    raw_out = v_mid_s + ((lut_raw * v_amp_s) >> 13);
+    raw_out = v_mid_s + ((mult) >> 13);
     o_drive = (i_active==1'b0)?'b0:(raw_out > v_max_cut_s) ? v_max_cut_s : (raw_out < v_min_cut_s) ? v_min_cut_s : raw_out[13:0];
   end
 

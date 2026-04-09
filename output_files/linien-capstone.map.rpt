@@ -1,5 +1,5 @@
 Analysis & Synthesis report for linien-capstone
-Thu Apr  9 14:55:41 2026
+Thu Apr  9 15:55:41 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
 
 
@@ -63,13 +63,13 @@ on the Quartus Prime software download page.
 +-----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                      ;
 +---------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Thu Apr  9 14:55:41 2026           ;
+; Analysis & Synthesis Status     ; Successful - Thu Apr  9 15:55:41 2026           ;
 ; Quartus Prime Version           ; 25.1std.0 Build 1129 10/21/2025 SC Lite Edition ;
 ; Revision Name                   ; linien-capstone                                 ;
 ; Top-level Entity Name           ; top                                             ;
 ; Family                          ; Cyclone V                                       ;
 ; Logic utilization (in ALMs)     ; N/A                                             ;
-; Total registers                 ; 609                                             ;
+; Total registers                 ; 628                                             ;
 ; Total pins                      ; 103                                             ;
 ; Total virtual pins              ; 0                                               ;
 ; Total block memory bits         ; 22,528                                          ;
@@ -232,13 +232,13 @@ on the Quartus Prime software download page.
 ; Estimate of Logic utilization (ALMs needed) ; 593       ;
 ;                                             ;           ;
 ; Combinational ALUT usage for logic          ; 790       ;
-;     -- 7 input functions                    ; 4         ;
+;     -- 7 input functions                    ; 2         ;
 ;     -- 6 input functions                    ; 351       ;
 ;     -- 5 input functions                    ; 40        ;
-;     -- 4 input functions                    ; 30        ;
+;     -- 4 input functions                    ; 32        ;
 ;     -- <=3 input functions                  ; 365       ;
 ;                                             ;           ;
-; Dedicated logic registers                   ; 609       ;
+; Dedicated logic registers                   ; 628       ;
 ;                                             ;           ;
 ; I/O pins                                    ; 103       ;
 ; Total MLAB memory bits                      ; 0         ;
@@ -247,9 +247,9 @@ on the Quartus Prime software download page.
 ; Total DSP Blocks                            ; 2         ;
 ;                                             ;           ;
 ; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 655       ;
-; Total fan-out                               ; 7243      ;
-; Average fan-out                             ; 4.38      ;
+; Maximum fan-out                             ; 674       ;
+; Total fan-out                               ; 7313      ;
+; Average fan-out                             ; 4.37      ;
 +---------------------------------------------+-----------+
 
 
@@ -258,7 +258,7 @@ on the Quartus Prime software download page.
 +-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+-----------------+--------------+
 ; Compilation Hierarchy Node                ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                        ; Entity Name     ; Library Name ;
 +-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+-----------------+--------------+
-; |top                                      ; 790 (0)             ; 609 (0)                   ; 22528             ; 2          ; 103  ; 0            ; |top                                                                       ; top             ; work         ;
+; |top                                      ; 790 (0)             ; 628 (0)                   ; 22528             ; 2          ; 103  ; 0            ; |top                                                                       ; top             ; work         ;
 ;    |arb_wave:u_arb_wave|                  ; 100 (100)           ; 89 (89)                   ; 0                 ; 0          ; 0    ; 0            ; |top|arb_wave:u_arb_wave                                                   ; arb_wave        ; work         ;
 ;    |bram:BRAM|                            ; 0 (0)               ; 0 (0)                     ; 14336             ; 0          ; 0    ; 0            ; |top|bram:BRAM                                                             ; bram            ; work         ;
 ;       |altsyncram:mem_rtl_0|              ; 0 (0)               ; 0 (0)                     ; 14336             ; 0          ; 0    ; 0            ; |top|bram:BRAM|altsyncram:mem_rtl_0                                        ; altsyncram      ; work         ;
@@ -271,7 +271,7 @@ on the Quartus Prime software download page.
 ;    |delay:u_delay|                        ; 1 (1)               ; 14 (14)                   ; 0                 ; 0          ; 0    ; 0            ; |top|delay:u_delay                                                         ; delay           ; work         ;
 ;    |direct_jump:u_direct_jump|            ; 1 (1)               ; 14 (14)                   ; 0                 ; 0          ; 0    ; 0            ; |top|direct_jump:u_direct_jump                                             ; direct_jump     ; work         ;
 ;    |linear_ramp:u_linear_ramp|            ; 18 (18)             ; 43 (43)                   ; 0                 ; 0          ; 0    ; 0            ; |top|linear_ramp:u_linear_ramp                                             ; linear_ramp     ; work         ;
-;    |sinusoid:u_sinusoid|                  ; 347 (347)           ; 192 (192)                 ; 0                 ; 2          ; 0    ; 0            ; |top|sinusoid:u_sinusoid                                                   ; sinusoid        ; work         ;
+;    |sinusoid:u_sinusoid|                  ; 347 (347)           ; 211 (211)                 ; 0                 ; 2          ; 0    ; 0            ; |top|sinusoid:u_sinusoid                                                   ; sinusoid        ; work         ;
 +-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+-----------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
@@ -334,10 +334,10 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 609   ;
-; Number of registers using Synchronous Clear  ; 573   ;
+; Total registers                              ; 628   ;
+; Number of registers using Synchronous Clear  ; 592   ;
 ; Number of registers using Synchronous Load   ; 92    ;
-; Number of registers using Asynchronous Clear ; 304   ;
+; Number of registers using Asynchronous Clear ; 323   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
 ; Number of registers using Clock Enable       ; 518   ;
 ; Number of registers using Preset             ; 0     ;
@@ -364,34 +364,34 @@ Encoding Type:  One-Hot
 +------------------------------------+-----------------------------+------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                              ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                    ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
-; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |top|control:u_control|cur_type[2]            ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|delay:u_delay|v_prev[0]                  ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|o_drive_ff[13] ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|direct_jump:u_direct_jump|v_target[2]    ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|control:u_control|dur[23]                ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|arb_wave:u_arb_wave|div_counter[10]      ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |top|arb_wave:u_arb_wave|bram_addr_r[9]       ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|v_step[13]     ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|v_start[3]     ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|a[27]              ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|raterate[15]       ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|rate[22]           ;
-; 4:1                ; 64 bits   ; 128 LEs       ; 0 LEs                ; 128 LEs                ; Yes        ; |top|chirp_gen:u_chirp_gen|cur_voltage[0]     ;
-; 5:1                ; 14 bits   ; 42 LEs        ; 0 LEs                ; 42 LEs                 ; Yes        ; |top|control:u_control|prev_v_drive[4]        ;
-; 6:1                ; 31 bits   ; 124 LEs       ; 0 LEs                ; 124 LEs                ; Yes        ; |top|control:u_control|count[27]              ;
-; 7:1                ; 3 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |top|control:u_control|param_idx[1]           ;
-; 7:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |top|control:u_control|block_idx[3]           ;
-; 3:1                ; 41 bits   ; 82 LEs        ; 82 LEs               ; 0 LEs                  ; No         ; |top|control:u_control|o_param_data[1]        ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |top|control:u_control|Selector62             ;
-; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |top|control:u_control|Selector4              ;
-; 8:1                ; 2 bits    ; 10 LEs        ; 6 LEs                ; 4 LEs                  ; No         ; |top|control:u_control|Selector1              ;
-; 17:1               ; 14 bits   ; 154 LEs       ; 140 LEs              ; 14 LEs                 ; No         ; |top|control:u_control|Mux6                   ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |top|control:u_control|cur_type[1]           ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|delay:u_delay|v_prev[11]                ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|o_drive_ff[4] ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|direct_jump:u_direct_jump|v_target[11]  ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|control:u_control|dur[12]               ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|arb_wave:u_arb_wave|div_counter[12]     ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |top|arb_wave:u_arb_wave|bram_addr_r[4]      ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|v_step[6]     ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |top|linear_ramp:u_linear_ramp|v_start[9]    ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|a[8]              ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|raterate[18]      ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |top|chirp_gen:u_chirp_gen|rate[18]          ;
+; 4:1                ; 64 bits   ; 128 LEs       ; 0 LEs                ; 128 LEs                ; Yes        ; |top|chirp_gen:u_chirp_gen|cur_voltage[17]   ;
+; 5:1                ; 14 bits   ; 42 LEs        ; 0 LEs                ; 42 LEs                 ; Yes        ; |top|control:u_control|prev_v_drive[0]       ;
+; 6:1                ; 31 bits   ; 124 LEs       ; 0 LEs                ; 124 LEs                ; Yes        ; |top|control:u_control|count[22]             ;
+; 7:1                ; 3 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |top|control:u_control|param_idx[1]          ;
+; 7:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |top|control:u_control|block_idx[3]          ;
+; 3:1                ; 41 bits   ; 82 LEs        ; 82 LEs               ; 0 LEs                  ; No         ; |top|control:u_control|o_param_data[14]      ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |top|control:u_control|Selector62            ;
+; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |top|control:u_control|Selector4             ;
+; 8:1                ; 2 bits    ; 10 LEs        ; 6 LEs                ; 4 LEs                  ; No         ; |top|control:u_control|Selector1             ;
+; 17:1               ; 14 bits   ; 154 LEs       ; 140 LEs              ; 14 LEs                 ; No         ; |top|control:u_control|Mux6                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------+
 
 
 +--------------------------------------------------------------------------------------+
@@ -661,9 +661,9 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 609                         ;
+; arriav_ff             ; 628                         ;
 ;     CLR               ; 11                          ;
-;     CLR SCLR          ; 78                          ;
+;     CLR SCLR          ; 97                          ;
 ;     ENA               ; 10                          ;
 ;     ENA CLR SCLR      ; 201                         ;
 ;     ENA CLR SLD       ; 14                          ;
@@ -676,20 +676,20 @@ Note: In order to hide this table in the UI and the text report file, please set
 ;         0 data inputs ; 1                           ;
 ;         1 data inputs ; 125                         ;
 ;         2 data inputs ; 129                         ;
-;     extend            ; 4                           ;
-;         7 data inputs ; 4                           ;
-;     normal            ; 531                         ;
+;     extend            ; 2                           ;
+;         7 data inputs ; 2                           ;
+;     normal            ; 533                         ;
 ;         2 data inputs ; 76                          ;
 ;         3 data inputs ; 34                          ;
-;         4 data inputs ; 30                          ;
+;         4 data inputs ; 32                          ;
 ;         5 data inputs ; 40                          ;
 ;         6 data inputs ; 351                         ;
 ; arriav_mac            ; 2                           ;
 ; boundary_port         ; 103                         ;
 ; stratixv_ram_block    ; 46                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 10.40                       ;
-; Average LUT depth     ; 3.86                        ;
+; Max LUT depth         ; 9.10                        ;
+; Average LUT depth     ; 3.75                        ;
 +-----------------------+-----------------------------+
 
 
@@ -698,7 +698,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:01     ;
+; Top            ; 00:00:02     ;
 +----------------+--------------+
 
 
@@ -708,7 +708,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
-    Info: Processing started: Thu Apr  9 14:55:34 2026
+    Info: Processing started: Thu Apr  9 15:55:30 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off linien-capstone -c linien-capstone
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 10 of the 10 processors detected
@@ -744,6 +744,7 @@ Info (12128): Elaborating entity "chirp_gen" for hierarchy "chirp_gen:u_chirp_ge
 Warning (10036): Verilog HDL or VHDL warning at chirp_gen.sv(20): object "b" assigned a value but never read File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/chirp_gen.sv Line: 20
 Info (12128): Elaborating entity "sinusoid" for hierarchy "sinusoid:u_sinusoid" File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/top.sv Line: 194
 Warning (10036): Verilog HDL or VHDL warning at sinusoid.sv(89): object "active_pulse" assigned a value but never read File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 89
+Warning (10036): Verilog HDL or VHDL warning at sinusoid.sv(131): object "add" assigned a value but never read File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 131
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(1): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 1
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(2): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 2
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(3): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 3
@@ -1768,7 +1769,7 @@ Warning (10230): Verilog HDL assignment warning at sin_lut.memh(1021): truncated
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(1022): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 1022
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(1023): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 1023
 Warning (10230): Verilog HDL assignment warning at sin_lut.memh(1024): truncated value with size 16 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/sin_lut.memh Line: 1024
-Warning (10230): Verilog HDL assignment warning at sinusoid.sv(116): truncated value with size 32 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 116
+Warning (10230): Verilog HDL assignment warning at sinusoid.sv(149): truncated value with size 32 to match size of target (14) File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 149
 Warning (10030): Net "sin_LUT.data_a" at sinusoid.sv(77) has no driver or initial value, using a default initial value '0' File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 77
 Warning (10030): Net "sin_LUT.waddr_a" at sinusoid.sv(77) has no driver or initial value, using a default initial value '0' File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 77
 Warning (10030): Net "sin_LUT.we_a" at sinusoid.sv(77) has no driver or initial value, using a default initial value '0' File: /home/vedaant/school_files/spring2026/ECE554/ECE554-Linien-Capstone/src/sinusoid.sv Line: 77
@@ -1850,16 +1851,16 @@ Info (286030): Timing-Driven Synthesis is running
 Info (17049): 3 registers lost all their fanouts during netlist optimizations.
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 1333 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 1352 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 87 input pins
     Info (21059): Implemented 16 output pins
-    Info (21061): Implemented 1182 logic cells
+    Info (21061): Implemented 1201 logic cells
     Info (21064): Implemented 46 RAM segments
     Info (21062): Implemented 2 DSP elements
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1033 warnings
-    Info: Peak virtual memory: 544 megabytes
-    Info: Processing ended: Thu Apr  9 14:55:41 2026
-    Info: Elapsed time: 00:00:07
-    Info: Total CPU time (on all processors): 00:00:14
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1034 warnings
+    Info: Peak virtual memory: 554 megabytes
+    Info: Processing ended: Thu Apr  9 15:55:41 2026
+    Info: Elapsed time: 00:00:11
+    Info: Total CPU time (on all processors): 00:00:26
 
 
